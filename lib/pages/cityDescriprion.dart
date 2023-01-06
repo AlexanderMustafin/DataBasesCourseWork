@@ -687,9 +687,9 @@ class RestaurantsWidget extends StatelessWidget {
                           color: Colors.white)),
                 ),
                 Row(
-                  children: const [
-                    Icon(Icons.star, color: Color(0xffffb006)),
-                    Text('5', style: TextStyle(color: Color(0xffffb006))),
+                  children: [
+                    const Icon(Icons.star, color: Color(0xffffb006)),
+                    Text(rating, style: TextStyle(color: Color(0xffffb006))),
                   ],
                 )
               ],
@@ -766,7 +766,7 @@ class AttractionWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 60,
+                  width: 90,
                   child: Text(name,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
@@ -775,12 +775,6 @@ class AttractionWidget extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           color: Colors.white)),
                 ),
-                Row(
-                  children: const [
-                    Icon(Icons.star, color: Color(0xffffb006)),
-                    Text('5', style: TextStyle(color: Color(0xffffb006))),
-                  ],
-                )
               ],
             ),
             Row(
@@ -797,7 +791,6 @@ class AttractionWidget extends StatelessWidget {
                                   descriprion: description,
                                   HotelName: name,
                                   pictures: picteures,
-                                  rating: rating,
                                 )));
                   },
                   style: ButtonStyle(

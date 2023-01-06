@@ -14,7 +14,7 @@ class HotelDescriprionWidget extends StatefulWidget {
     required this.imageURL,
     required this.townName,
     required this.pictures,
-    required this.rating,
+    this.rating,
   });
   final HotelName;
   final descriprion;
@@ -66,23 +66,25 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                                 ),
                                 color: Colors.white,
                               ),
-                              Row(
-                                children: [
-                                  Text(
-                                    widget.rating,
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      color: Color(0xffffb006),
-                                      fontWeight: FontWeight.bold,
+                              if (widget.rating != '') ...[
+                                Row(
+                                  children: [
+                                    Text(
+                                      widget.rating,
+                                      style: const TextStyle(
+                                        fontSize: 25,
+                                        color: Color(0xffffb006),
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
-                                  Icon(
-                                    Icons.star,
-                                    color: Color(0xffffb006),
-                                    size: 30,
-                                  )
-                                ],
-                              )
+                                    const Icon(
+                                      Icons.star,
+                                      color: Color(0xffffb006),
+                                      size: 30,
+                                    )
+                                  ],
+                                )
+                              ]
                             ],
                           ),
                           Column(
