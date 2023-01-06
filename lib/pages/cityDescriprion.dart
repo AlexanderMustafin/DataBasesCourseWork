@@ -580,6 +580,7 @@ class HotelCardWidget extends StatelessWidget {
                                   descriprion: description,
                                   HotelName: name,
                                   pictures: pictures,
+                                  rating: rating,
                                 )));
                   },
                   style: ButtonStyle(
@@ -707,6 +708,7 @@ class RestaurantsWidget extends StatelessWidget {
                                   descriprion: description,
                                   HotelName: name,
                                   pictures: picteures,
+                                  rating: rating,
                                 )));
                   },
                   style: ButtonStyle(
@@ -795,6 +797,7 @@ class AttractionWidget extends StatelessWidget {
                                   descriprion: description,
                                   HotelName: name,
                                   pictures: picteures,
+                                  rating: rating,
                                 )));
                   },
                   style: ButtonStyle(

@@ -14,12 +14,14 @@ class HotelDescriprionWidget extends StatefulWidget {
     required this.imageURL,
     required this.townName,
     required this.pictures,
+    required this.rating,
   });
   final HotelName;
   final descriprion;
   final imageURL;
   final townName;
   final pictures;
+  final rating;
 
   @override
   State<HotelDescriprionWidget> createState() => _HotelDescriprionWidgetState();
@@ -65,9 +67,9 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                                 color: Colors.white,
                               ),
                               Row(
-                                children: const [
+                                children: [
                                   Text(
-                                    '5',
+                                    widget.rating,
                                     style: TextStyle(
                                       fontSize: 25,
                                       color: Color(0xffffb006),
