@@ -95,6 +95,7 @@ class Hotel {
   final String? name;
   final String? picture;
   final String? rating;
+  final String? pictures;
 
   Hotel({
     required this.descriotion,
@@ -102,6 +103,7 @@ class Hotel {
     required this.name,
     required this.picture,
     required this.rating,
+    required this.pictures,
   });
 
   static Hotel fromJsonHotel(Map<String, dynamic> json) => Hotel(
@@ -110,6 +112,7 @@ class Hotel {
         name: json['Name'] ?? '',
         picture: json['Picture'] ?? '',
         rating: json['Rating'] ?? '*',
+        pictures: json['Picture_2'] ?? '',
       );
 }
 
@@ -119,6 +122,8 @@ class Cafe {
   final int? idPosition;
   final String? name;
   final String? picture;
+  final String? pictures;
+  final String? rating;
 
   Cafe({
     required this.descriotion,
@@ -126,6 +131,8 @@ class Cafe {
     required this.idPosition,
     required this.name,
     required this.picture,
+    required this.pictures,
+    required this.rating,
   });
 
   static Cafe fromJsonCafe(Map<String, dynamic> json) => Cafe(
@@ -134,6 +141,8 @@ class Cafe {
         idPosition: json['Id position'] ?? 0,
         name: json['Name'] ?? '',
         picture: json['Picture'] ?? '',
+        pictures: json['Picture_2'] ?? '',
+        rating: json['Rating'] ?? '',
       );
 }
 
@@ -143,6 +152,8 @@ class Attraction {
   final int? idPosition;
   final String? name;
   final String? picture;
+  final String? rating;
+  final String? pictures;
 
   Attraction({
     required this.descriotion,
@@ -150,6 +161,8 @@ class Attraction {
     required this.idPosition,
     required this.name,
     required this.picture,
+    required this.pictures,
+    required this.rating,
   });
 
   static Attraction fromJsonAttraction(Map<String, dynamic> json) => Attraction(
@@ -158,6 +171,8 @@ class Attraction {
         idPosition: json['Id position'] ?? 0,
         name: json['Name'] ?? '',
         picture: json['Picture'] ?? '',
+        rating: json['Rating'] ?? '',
+        pictures: json['Picture_2'] ?? '',
       );
 }
 

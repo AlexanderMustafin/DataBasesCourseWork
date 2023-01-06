@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:322585041489:android:c901db51e42c668cb7f670",
+        "mobilesdk_app_id": "1:322585041489:android:db4f3df6c7c42646b7f670",
         "android_client_info": {
-          "package_name": "com.traveller"
+          "package_name": "com.example.recipe_book_figma"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "322585041489-r1eks38msctevtjcojbp9hv809dhb6h6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.recipe_book_figma",
+            "certificate_hash": "4c2db6cb1a322d5769649507c63868342f3b1bb7"
+          }
+        },
         {
           "client_id": "322585041489-m5caodpls4ge76udb4kfqtv92jr38kst.apps.googleusercontent.com",
           "client_type": 3

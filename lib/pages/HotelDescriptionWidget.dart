@@ -7,77 +7,31 @@ import 'package:provider/provider.dart';
 
 import '../login/services/authServ.dart';
 
-class GetBoxOffset extends StatefulWidget {
-  final Widget child;
-  final Function(Offset offset) offset;
-  const GetBoxOffset({super.key, required this.child, required this.offset});
-
-  @override
-  State<GetBoxOffset> createState() => _GetBoxOffsetState(this.child);
-}
-
-class _GetBoxOffsetState extends State<GetBoxOffset> {
-  final Widget child;
-  Offset offset = Offset(0.0, 0.0);
-  GlobalKey widgetKey = GlobalKey();
-
-  _GetBoxOffsetState(this.child);
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final box = widgetKey.currentContext?.findRenderObject() as RenderBox;
-      offset = box.localToGlobal(Offset.zero);
-      widget.offset(offset);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      key: widgetKey,
-      child: widget.child,
-    );
-  }
-}
-
 class HotelDescriprionWidget extends StatefulWidget {
   const HotelDescriprionWidget({
     required this.HotelName,
     required this.descriprion,
     required this.imageURL,
     required this.townName,
+    required this.pictures,
   });
   final HotelName;
   final descriprion;
   final imageURL;
   final townName;
+  final pictures;
 
   @override
   State<HotelDescriprionWidget> createState() => _HotelDescriprionWidgetState();
 }
 
 class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
-  List<double> item = [];
-  late ScrollController scrollController;
-  double valueHotel = 0.0;
-  double valueRest = 0.0;
-  double valueAttract = 0.0;
-
-  @override
-  void initState() {
-    scrollController = ScrollController();
-    item = List.generate(4, (index) => index.toDouble());
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    List<String> mylist = widget.pictures.split(' ');
     return Scaffold(
-        backgroundColor: Color(0xffe8dfe2),
+        backgroundColor: Color.fromARGB(255, 255, 255, 255),
         body: SingleChildScrollView(
-          controller: scrollController,
           child: Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,11 +135,74 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                       ),
                     )),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  color: Colors.white,
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const Text(
+                        'Description',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w800,
+                          color: Color(0xff151a22),
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(16),
+                          color: Color(0xffe8eef7),
+                        ),
+                        width: double.infinity,
+                        child: Text(
+                          widget.descriprion,
+                          style: const TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xff4a627f),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      const Text(
+                        'Pictures',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w800,
+                          color: Color(0xff151a22),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      SizedBox(
+                        height: 140,
+                        child: ListView.builder(
+                          itemCount: mylist.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 10),
+                              height: 140,
+                              width: 140,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(mylist[index]),
+                                    fit: BoxFit.cover),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -216,86 +233,21 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                                 height: 200,
                                 child: ListView(
                                   scrollDirection: Axis.horizontal,
-                                  children:
-                                  comment.map(builtCommentCardWidget).toList(),
+                                  children: comment
+                                      .map(builtCommentCardWidget)
+                                      .toList(),
                                 ),
                               );
                             } else {
-                              return const Center(child: CircularProgressIndicator());
+                              return const Center(
+                                  child: CircularProgressIndicator());
                             }
                           }),
-                      const Text(
-                        'Description',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xff151a22),
-                        ),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: Color(0xffe8eef7),
-                        ),
-                        width: double.infinity,
-                        child: Text(
-                          widget.descriprion,
-                          style: const TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xff4a627f),
-                          ),
-                        ),
+                      const SizedBox(
+                        height: 20,
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  color: Colors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Rating & Reviews',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xff151a22),
-                        ),
-                      ),
-                      Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(16),
-                          color: Color(0xffe8eef7),
-                        ),
-                        width: double.infinity,
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              widget.descriprion,
-                              style: const TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w600,
-                                color: Color(0xff4a627f),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
                 ),
               ],
             ),
@@ -304,11 +256,11 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
   }
 
   Widget builtCommentCardWidget(Comment comment) => CommentCardWidget(
-    comment.comment,
-    comment.rating,
-    comment.userName,
-    comment.Name,
-  );
+        comment.comment,
+        comment.rating,
+        comment.userName,
+        comment.Name,
+      );
 
   Container CommentCardWidget(
       String? commentaty, String? rating, String? userName, String? townName) {
@@ -331,7 +283,7 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                   Text(
                     userName!,
                     style:
-                    const TextStyle(fontSize: 20, color: Color(0xff8792a6)),
+                        const TextStyle(fontSize: 20, color: Color(0xff8792a6)),
                   ),
                   Row(
                     children: [
@@ -388,10 +340,10 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                       hintText: 'Enter a comment',
                       focusedBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.black, width: 3)),
+                              BorderSide(color: Colors.black, width: 3)),
                       enabledBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.black, width: 1)),
+                              BorderSide(color: Colors.black, width: 1)),
                       hintStyle: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -411,10 +363,10 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                       hintText: 'Enter a rating',
                       focusedBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.black, width: 3)),
+                              BorderSide(color: Colors.black, width: 3)),
                       enabledBorder: OutlineInputBorder(
                           borderSide:
-                          BorderSide(color: Colors.black, width: 1)),
+                              BorderSide(color: Colors.black, width: 1)),
                       hintStyle: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,

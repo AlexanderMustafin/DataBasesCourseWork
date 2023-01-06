@@ -42,7 +42,9 @@ class AuthRepository {
 
   Future<void> signInWithGoogle() async {
     try {
+      print('its working before');
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      print('its working after');
 
       final GoogleSignInAuthentication? googleAuth =
           await googleUser?.authentication;

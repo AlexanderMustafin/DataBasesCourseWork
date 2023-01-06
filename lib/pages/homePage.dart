@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:data_bases_project/blocs/auth/bloc/auth_bloc.dart';
 import 'package:data_bases_project/login/services/authServ.dart';
+import 'package:data_bases_project/pages/SignIn.dart';
 import 'package:data_bases_project/pages/infoPage.dart';
 import 'package:data_bases_project/pages/testDataPage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'favoriteCities.dart';
@@ -62,49 +65,64 @@ class CustomBarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('images/appBarHeader.png'),
-                fit: BoxFit.cover)),
-        width: double.infinity,
-        height: 160.0,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
+      body: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, state) {
+          return Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('images/appBarHeader.png'),
+                    fit: BoxFit.cover)),
+            width: double.infinity,
+            height: 160.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Center(
-                  child: Text(
-                    'Where do you want to travel?',
-                    style: TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                Row(
+                  children: [
+                    const Center(
+                      child: Text(
+                        'Where do you want to travel?',
+                        style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
-                  ),
+                    IconButton(
+                        onPressed: () {
+                          _logOut(context);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignIn()),
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.logout,
+                          color: Colors.white,
+                        ))
+                  ],
                 ),
-                IconButton(
-                    onPressed: () {
-                      AuthSevrice().logOut();
-                    },
-                    icon: const Icon(
-                      Icons.logout,
-                      color: Colors.white,
-                    ))
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    DropdownButtonExample(),
+                  ],
+                )
               ],
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                DropdownButtonExample(),
-              ],
-            )
-          ],
-        ),
+          );
+        },
       ),
     );
   }
+}
+
+void _logOut(context) {
+  BlocProvider.of<AuthBloc>(context).add(
+    SignOutRequested(),
+  );
 }
 
 class DropdownButtonExample extends StatefulWidget {

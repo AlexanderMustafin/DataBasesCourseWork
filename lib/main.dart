@@ -1,7 +1,6 @@
 import 'package:data_bases_project/login/userWidget.dart';
 import 'package:data_bases_project/login/services/authServ.dart';
 import 'package:data_bases_project/pages/SignIn.dart';
-import 'package:data_bases_project/pages/dashboard.dart';
 import 'package:data_bases_project/pages/homePage.dart';
 import 'package:data_bases_project/pages/testDataPage.dart';
 import 'package:data_bases_project/repositories/auth/auth_repository.dart';
@@ -36,6 +35,7 @@ class MyApp extends StatelessWidget {
               authRepository: RepositoryProvider.of<AuthRepository>(context),
             ),
             child: MaterialApp(
+              debugShowCheckedModeBanner: false,
               home: StreamBuilder<User?>(
                   stream: FirebaseAuth.instance.authStateChanges(),
                   builder: (context, snapshot) {

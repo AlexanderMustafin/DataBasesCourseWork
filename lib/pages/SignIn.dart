@@ -33,12 +33,10 @@ class _SignInState extends State<SignIn> {
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is Authenticated) {
-            // Navigating to the dashboard screen if the user is authenticated
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const MyHomePage()));
           }
           if (state is AuthError) {
-            // Showing the error message if the user has entered invalid credentials
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.error)));
           }
@@ -46,13 +44,11 @@ class _SignInState extends State<SignIn> {
         child: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
             if (state is Loading) {
-              // Showing the loading indicator while the user is signing in
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
             if (state is UnAuthenticated) {
-              // Showing the sign in form if the user is not authenticated
               return Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: SingleChildScrollView(

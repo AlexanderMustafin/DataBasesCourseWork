@@ -352,6 +352,9 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
         description: cafe.descriotion,
         name: cafe.name,
         picture: cafe.picture,
+        rating: cafe.rating,
+        townName: widget.cityName,
+        picteures: cafe.pictures,
       );
 
   Widget builtHotleCardWidget(Hotel hotel) => HotelCardWidget(
@@ -360,12 +363,16 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
         picture: hotel.picture,
         rating: hotel.rating,
         townName: widget.cityName,
+        pictures: hotel.pictures,
       );
 
   Widget builtAttractionCardWidget(Attraction attraction) => AttractionWidget(
         description: attraction.descriotion,
         name: attraction.name,
         picture: attraction.picture,
+        rating: attraction.rating,
+        townName: widget.cityName,
+        picteures: attraction.pictures,
       );
 
   Future<void> addComment() async {
@@ -506,6 +513,7 @@ class HotelCardWidget extends StatelessWidget {
   final picture;
   final rating;
   final townName;
+  final pictures;
   const HotelCardWidget({
     super.key,
     required this.description,
@@ -513,6 +521,7 @@ class HotelCardWidget extends StatelessWidget {
     required this.picture,
     required this.rating,
     required this.townName,
+    required this.pictures,
   });
 
   @override
@@ -570,6 +579,7 @@ class HotelCardWidget extends StatelessWidget {
                                   imageURL: picture,
                                   descriprion: description,
                                   HotelName: name,
+                                  pictures: pictures,
                                 )));
                   },
                   style: ButtonStyle(
@@ -633,11 +643,18 @@ class RestaurantsWidget extends StatelessWidget {
   final description;
   final name;
   final picture;
-  const RestaurantsWidget(
-      {super.key,
-      required this.description,
-      required this.name,
-      required this.picture});
+  final rating;
+  final townName;
+  final picteures;
+  const RestaurantsWidget({
+    super.key,
+    required this.description,
+    required this.name,
+    required this.picture,
+    required this.rating,
+    required this.townName,
+    required this.picteures,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -680,7 +697,18 @@ class RestaurantsWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HotelDescriprionWidget(
+                                  townName: townName,
+                                  imageURL: picture,
+                                  descriprion: description,
+                                  HotelName: name,
+                                  pictures: picteures,
+                                )));
+                  },
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
@@ -703,11 +731,18 @@ class AttractionWidget extends StatelessWidget {
   final description;
   final name;
   final picture;
-  const AttractionWidget(
-      {super.key,
-      required this.description,
-      required this.name,
-      required this.picture});
+  final rating;
+  final townName;
+  final picteures;
+  const AttractionWidget({
+    super.key,
+    required this.description,
+    required this.name,
+    required this.picture,
+    required this.rating,
+    required this.townName,
+    required this.picteures,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -750,7 +785,18 @@ class AttractionWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HotelDescriprionWidget(
+                                  townName: townName,
+                                  imageURL: picture,
+                                  descriprion: description,
+                                  HotelName: name,
+                                  pictures: picteures,
+                                )));
+                  },
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
