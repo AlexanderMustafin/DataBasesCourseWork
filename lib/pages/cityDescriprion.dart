@@ -45,298 +45,311 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-              height: 300,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  image: DecorationImage(
-                      image: NetworkImage(widget.imageURL), fit: BoxFit.cover)),
-              child: Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          icon: const Icon(
-                            Icons.arrow_back,
-                            size: 35,
-                          ),
-                          color: Colors.white,
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              if (isFavorite == true) {
-                                final docTown = FirebaseFirestore.instance
-                                    .collection('Town')
-                                    .doc(widget.cityName);
-                                docTown.update({'isFavorite': false});
-                                isFavorite = false;
-                              } else {
-                                final docTown = FirebaseFirestore.instance
-                                    .collection('Town')
-                                    .doc(widget.cityName);
-                                docTown.update({'isFavorite': true});
-                                isFavorite = true;
-                              }
-                            });
-                          },
-                          icon: const Icon(Icons.favorite),
-                          color: isFavorite ? Colors.red : Colors.white,
-                        ),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.cityName,
-                          style: const TextStyle(
-                            fontSize: 30,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                const Icon(
-                                  Icons.location_on,
-                                  color: Colors.white,
-                                ),
-                                Text(widget.parentCounry,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                    )),
-                              ],
-                            ),
-                            const Icon(
-                              Icons.location_city,
-                              size: 35,
-                              color: Colors.white,
-                            )
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              )),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Included',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xff151a22),
-                  ),
-                ),
-                const Text(
-                  'For more details press on the icons.',
-                  style: TextStyle(fontSize: 18, color: Color(0xffaeb8c4)),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IncludedIconWidget(
-                      icon: Icons.flight,
-                      name: 'Flight',
-                    ),
-                    IncludedIconWidget(
-                      icon: Icons.hotel,
-                      name: 'Hotels',
-                    ),
-                    IncludedIconWidget(
-                      icon: Icons.restaurant,
-                      name: 'Restaurants',
-                    ),
-                    IncludedIconWidget(
-                      icon: Icons.attractions,
-                      name: 'Attractions',
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  'Description',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xff151a22),
-                  ),
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  decoration: BoxDecoration(
+      child: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          image: AssetImage('images/bg3.jpg'),
+          repeat: ImageRepeat.repeatY,
+        )),
+        child: Column(
+          children: [
+            Container(
+                height: 300,
+                width: double.infinity,
+                decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16),
-                    color: const Color(0xffe8eef7),
+                    image: DecorationImage(
+                        image: NetworkImage(widget.imageURL),
+                        fit: BoxFit.cover)),
+                child: Container(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back,
+                              size: 35,
+                            ),
+                            color: Colors.white,
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                if (isFavorite == true) {
+                                  final docTown = FirebaseFirestore.instance
+                                      .collection('Town')
+                                      .doc(widget.cityName);
+                                  docTown.update({'isFavorite': false});
+                                  isFavorite = false;
+                                } else {
+                                  final docTown = FirebaseFirestore.instance
+                                      .collection('Town')
+                                      .doc(widget.cityName);
+                                  docTown.update({'isFavorite': true});
+                                  isFavorite = true;
+                                }
+                              });
+                            },
+                            icon: const Icon(Icons.favorite),
+                            color: isFavorite ? Colors.red : Colors.white,
+                          ),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.cityName,
+                            style: const TextStyle(
+                              fontSize: 30,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  const Icon(
+                                    Icons.location_on,
+                                    color: Colors.white,
+                                  ),
+                                  Text(widget.parentCounry,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                      )),
+                                ],
+                              ),
+                              const Icon(
+                                Icons.location_city,
+                                size: 35,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
+                        ],
+                      )
+                    ],
                   ),
-                  width: double.infinity,
-                  child: Text(
-                    widget.descriprion,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xff4a627f),
+                )),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Included',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xff151a22),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Rating & Reviews',
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.w800,
-                        color: Color(0xff151a22),
+                  const Text(
+                    'For more details press on the icons.',
+                    style: TextStyle(fontSize: 18, color: Color(0xffaeb8c4)),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IncludedIconWidget(
+                        icon: Icons.flight,
+                        name: 'Flight',
+                      ),
+                      IncludedIconWidget(
+                        icon: Icons.hotel,
+                        name: 'Hotels',
+                      ),
+                      IncludedIconWidget(
+                        icon: Icons.restaurant,
+                        name: 'Restaurants',
+                      ),
+                      IncludedIconWidget(
+                        icon: Icons.attractions,
+                        name: 'Attractions',
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    'Description',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xff151a22),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: const Color(0xffe8eef7),
+                    ),
+                    width: double.infinity,
+                    child: Text(
+                      widget.descriprion,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xff4a627f),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {
-                        addComment();
-                      },
-                      icon: const Icon(Icons.add_comment),
-                    )
-                  ],
-                ),
-                StreamBuilder<List<Comment>>(
-                    stream: readComment(widget.cityName),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Text('Something went wrong!');
-                      } else if (snapshot.hasData) {
-                        final comment = snapshot.data!;
-                        return SizedBox(
-                          height: 200,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children:
-                                comment.map(builtCommentCardWidget).toList(),
-                          ),
-                        );
-                      } else {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                    }),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  'Hotels',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xff151a22),
                   ),
-                ),
-                StreamBuilder<List<Hotel>>(
-                    stream: readHotel(widget.cityName),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Text('Something went wrong!');
-                      } else if (snapshot.hasData) {
-                        final hotels = snapshot.data!;
-                        return SizedBox(
-                          height: 140,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: hotels.map(builtHotleCardWidget).toList(),
-                          ),
-                        );
-                      } else {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                    }),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  'Restaurants',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xff151a22),
+                  const SizedBox(
+                    height: 20,
                   ),
-                ),
-                StreamBuilder<List<Cafe>>(
-                    stream: readCafe(widget.cityName),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Text('Something went wrong!');
-                      } else if (snapshot.hasData) {
-                        final cafes = snapshot.data!;
-                        return SizedBox(
-                          height: 140,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: cafes.map(builtCafeCardWidget).toList(),
-                          ),
-                        );
-                      } else {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                    }),
-                const SizedBox(
-                  height: 20,
-                ),
-                const Text(
-                  'Attraction',
-                  style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w800,
-                    color: Color(0xff151a22),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Rating & Reviews',
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.w800,
+                          color: Color(0xff151a22),
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          addComment();
+                        },
+                        icon: const Icon(Icons.add_comment),
+                      )
+                    ],
                   ),
-                ),
-                StreamBuilder<List<Attraction>>(
-                    stream: readAttraction(widget.cityName),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return const Text('Something went wrong!');
-                      } else if (snapshot.hasData) {
-                        final attraction = snapshot.data!;
-                        return SizedBox(
-                          height: 140,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            children: attraction
-                                .map(builtAttractionCardWidget)
-                                .toList(),
-                          ),
-                        );
-                      } else {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                    }),
-              ],
+                  StreamBuilder<List<Comment>>(
+                      stream: readComment(widget.cityName),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const Text('Something went wrong!');
+                        } else if (snapshot.hasData) {
+                          final comment = snapshot.data!;
+                          return SizedBox(
+                            height: 200,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children:
+                                  comment.map(builtCommentCardWidget).toList(),
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      }),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    'Hotels',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xff151a22),
+                    ),
+                  ),
+                  StreamBuilder<List<Hotel>>(
+                      stream: readHotel(widget.cityName),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const Text('Something went wrong!');
+                        } else if (snapshot.hasData) {
+                          final hotels = snapshot.data!;
+                          return SizedBox(
+                            height: 140,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children:
+                                  hotels.map(builtHotleCardWidget).toList(),
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      }),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    'Restaurants',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xff151a22),
+                    ),
+                  ),
+                  StreamBuilder<List<Cafe>>(
+                      stream: readCafe(widget.cityName),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const Text('Something went wrong!');
+                        } else if (snapshot.hasData) {
+                          final cafes = snapshot.data!;
+                          return SizedBox(
+                            height: 140,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: cafes.map(builtCafeCardWidget).toList(),
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      }),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    'Attraction',
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w800,
+                      color: Color(0xff151a22),
+                    ),
+                  ),
+                  StreamBuilder<List<Attraction>>(
+                      stream: readAttraction(widget.cityName),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const Text('Something went wrong!');
+                        } else if (snapshot.hasData) {
+                          final attraction = snapshot.data!;
+                          return SizedBox(
+                            height: 140,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: attraction
+                                  .map(builtAttractionCardWidget)
+                                  .toList(),
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      }),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ));
   }

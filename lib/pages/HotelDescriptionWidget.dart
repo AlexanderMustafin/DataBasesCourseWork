@@ -66,7 +66,8 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                                 ),
                                 color: Colors.white,
                               ),
-                              if (widget.rating != '') ...[
+                              if (widget.rating != '' &&
+                                  widget.rating != null) ...[
                                 Row(
                                   children: [
                                     Text(

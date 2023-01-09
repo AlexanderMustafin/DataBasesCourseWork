@@ -136,13 +136,10 @@ class AwaitWidget extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       child: Expanded(
         child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(user.toString()),
-              Text('Traveller'),
-              Text('Выберите страну'),
-            ],
+          child: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('images/logo.jpg'), fit: BoxFit.cover)),
           ),
         ),
       ),

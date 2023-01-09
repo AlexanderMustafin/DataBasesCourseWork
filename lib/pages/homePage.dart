@@ -4,6 +4,7 @@ import 'package:data_bases_project/login/services/authServ.dart';
 import 'package:data_bases_project/pages/SignIn.dart';
 import 'package:data_bases_project/pages/infoPage.dart';
 import 'package:data_bases_project/pages/testDataPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
@@ -62,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class CustomBarWidget extends StatelessWidget {
+  final User? user = fAuth.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,32 +79,40 @@ class CustomBarWidget extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Row(
-                  children: [
-                    const Center(
-                      child: Text(
-                        'Where do you want to travel?',
+                Container(
+                  margin: EdgeInsets.only(top: 15),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Hi ${user!.displayName}! \n Where do you want to Travel?',
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
                         ),
                       ),
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          _logOut(context);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SignIn()),
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.logout,
-                          color: Colors.white,
-                        ))
-                  ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          IconButton(
+                              onPressed: () {
+                                _logOut(context);
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const SignIn()),
+                                );
+                              },
+                              icon: const Icon(
+                                Icons.logout,
+                                color: Colors.white,
+                              )),
+                        ],
+                      )
+                    ],
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
