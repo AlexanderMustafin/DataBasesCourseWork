@@ -27,8 +27,15 @@ class _FirstScreenWidgetState extends State<FirstScreenWidget> {
           return AwaitWidget();
         } else if (snapshot.hasData) {
           final towns = snapshot.data!;
-          return ListView(
-            children: towns.map(builtCardWidget).toList(),
+          return Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage('images/bgOff20.jpg'),
+              repeat: ImageRepeat.repeatY,
+            )),
+            child: ListView(
+              children: towns.map(builtCardWidget).toList(),
+            ),
           );
         } else {
           return const Center(child: CircularProgressIndicator());

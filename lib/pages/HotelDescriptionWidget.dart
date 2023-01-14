@@ -35,6 +35,11 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         body: SingleChildScrollView(
           child: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage('images/bgOff20.jpg'),
+              repeat: ImageRepeat.repeatY,
+            )),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -85,7 +90,7 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                                     )
                                   ],
                                 )
-                              ]
+                              ],
                             ],
                           ),
                           Column(
@@ -234,15 +239,36 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                               return const Text('Something went wrong!');
                             } else if (snapshot.hasData) {
                               final comment = snapshot.data!;
-                              return SizedBox(
-                                height: 200,
-                                child: ListView(
-                                  scrollDirection: Axis.horizontal,
-                                  children: comment
-                                      .map(builtCommentCardWidget)
-                                      .toList(),
-                                ),
-                              );
+                              if (comment.isEmpty) {
+                                return Center(
+                                  child: Column(
+                                    children: const [
+                                      Text(
+                                        'There are no comments yet.',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      Text(
+                                        'Be the first to leave it',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return SizedBox(
+                                  height: 200,
+                                  child: ListView(
+                                    scrollDirection: Axis.horizontal,
+                                    children: comment
+                                        .map(builtCommentCardWidget)
+                                        .toList(),
+                                  ),
+                                );
+                              }
                             } else {
                               return const Center(
                                   child: CircularProgressIndicator());

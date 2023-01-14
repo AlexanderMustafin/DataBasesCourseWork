@@ -48,7 +48,7 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
       child: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-          image: AssetImage('images/bg3.jpg'),
+          image: AssetImage('images/bgOff20.jpg'),
           repeat: ImageRepeat.repeatY,
         )),
         child: Column(
