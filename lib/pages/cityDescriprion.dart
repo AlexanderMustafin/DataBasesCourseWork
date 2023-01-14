@@ -4,7 +4,7 @@ import 'package:data_bases_project/login/services/authServ.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'HotelDescriptionWidget.dart';
+import 'descriptionWidget.dart';
 
 class CityDescriprionWidget extends StatefulWidget {
   const CityDescriprionWidget(

@@ -1,5 +1,5 @@
-import 'package:data_bases_project/pages/SignIn.dart';
-import 'package:data_bases_project/pages/SignUp.dart';
+import 'package:data_bases_project/pages/signIn.dart';
+import 'package:data_bases_project/pages/signUp.dart';
 import 'package:data_bases_project/pages/homePage.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';

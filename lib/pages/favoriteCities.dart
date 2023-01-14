@@ -33,12 +33,12 @@ class FavoriteCitiesWidgetState extends State<FavoriteCitiesWidget> {
 }
 
 Widget builtCardWidget(Town town) => CardWidget(
-  title: town.name,
-  descriprion: town.description,
-  parentCountry: town.idCountry,
-  imageURL: town.pucture,
-  isFavorite: town.isFavorite,
-);
+      title: town.name,
+      descriprion: town.description,
+      parentCountry: town.idCountry,
+      imageURL: town.pucture,
+      isFavorite: town.isFavorite,
+    );
 
 class CardWidget extends StatelessWidget {
   final title;
@@ -52,14 +52,14 @@ class CardWidget extends StatelessWidget {
 
   const CardWidget(
       {Key? key,
-        required this.title,
-        required this.descriprion,
-        required this.imageURL,
-        required this.parentCountry,
-        required this.isFavorite,
-        this.comments,
-        this.commentsAuthor,
-        this.commentsRating})
+      required this.title,
+      required this.descriprion,
+      required this.imageURL,
+      required this.parentCountry,
+      required this.isFavorite,
+      this.comments,
+      this.commentsAuthor,
+      this.commentsRating})
       : super(key: key);
 
   @override
@@ -70,15 +70,15 @@ class CardWidget extends StatelessWidget {
             context,
             MaterialPageRoute(
                 builder: (context) => CityDescriprionWidget(
-                  cityName: title,
-                  descriprion: descriprion,
-                  imageURL: imageURL,
-                  parentCounry: parentCountry,
-                  isFavorite: isFavorite,
-                  comments: comments,
-                  commentsAuthor: commentsAuthor,
-                  commentsRating: commentsRating,
-                )));
+                      cityName: title,
+                      descriprion: descriprion,
+                      imageURL: imageURL,
+                      parentCounry: parentCountry,
+                      isFavorite: isFavorite,
+                      comments: comments,
+                      commentsAuthor: commentsAuthor,
+                      commentsRating: commentsRating,
+                    )));
       },
       child: Container(
           margin: const EdgeInsets.only(top: 12),

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_bases_project/blocs/auth/bloc/auth_bloc.dart';
 import 'package:data_bases_project/login/services/authServ.dart';
-import 'package:data_bases_project/pages/SignIn.dart';
+import 'package:data_bases_project/pages/signIn.dart';
 import 'package:data_bases_project/pages/infoPage.dart';
 import 'package:data_bases_project/pages/testDataPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';

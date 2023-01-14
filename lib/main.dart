@@ -1,6 +1,6 @@
 import 'package:data_bases_project/login/userWidget.dart';
 import 'package:data_bases_project/login/services/authServ.dart';
-import 'package:data_bases_project/pages/SignIn.dart';
+import 'package:data_bases_project/pages/signIn.dart';
 import 'package:data_bases_project/pages/homePage.dart';
 import 'package:data_bases_project/pages/testDataPage.dart';
 import 'package:data_bases_project/repositories/auth/auth_repository.dart';
