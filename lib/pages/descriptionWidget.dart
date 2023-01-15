@@ -30,6 +30,7 @@ class HotelDescriprionWidget extends StatefulWidget {
 class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
   @override
   Widget build(BuildContext context) {
+    final _transformationController = TransformationController();
     List<String> mylist = widget.pictures.split(' ');
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
@@ -194,17 +195,41 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                           itemCount: mylist.length,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              margin: const EdgeInsets.only(right: 10),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 10),
-                              height: 140,
-                              width: 140,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage(mylist[index]),
-                                    fit: BoxFit.cover),
-                                borderRadius: BorderRadius.circular(16),
+                            return GestureDetector(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                          contentPadding: EdgeInsets.all(0),
+                                          content: Stack(
+                                            alignment: Alignment.center,
+                                            children: <Widget>[
+                                              Image.network(
+                                                mylist[index],
+                                                height: 500,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ],
+                                          ),
+                                        ));
+                              },
+                              child: InteractiveViewer(
+                                maxScale: 4,
+                                transformationController:
+                                    _transformationController,
+                                child: Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  height: 140,
+                                  width: 140,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: NetworkImage(mylist[index]),
+                                        fit: BoxFit.cover),
+                                    borderRadius: BorderRadius.circular(16),
+                                  ),
+                                ),
                               ),
                             );
                           },
@@ -347,78 +372,126 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
   }
 
   Future<void> addComment() async {
+    List<String> _rating = ['1', '2', '3', '4', '5'];
+    dynamic _selectedRating = 'Choos the rating';
     final User? user = fAuth.currentUser;
     TextEditingController _commentController = TextEditingController();
-    TextEditingController _ratingController = TextEditingController();
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Comment'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                const Text('Enter your comment'),
-                TextField(
-                  controller: _commentController,
-                  obscureText: false,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.black54,
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            title: const Text('Comment'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  const Text('Enter your comment'),
+                  TextField(
+                    controller: _commentController,
+                    obscureText: false,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.black54,
+                    ),
+                    decoration: const InputDecoration(
+                        hintText: 'Enter a comment',
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 3)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 1)),
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.black)),
                   ),
-                  decoration: const InputDecoration(
-                      hintText: 'Enter a comment',
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 3)),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 1)),
-                      hintStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.black)),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextField(
-                  controller: _ratingController,
-                  obscureText: false,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.black54,
+                  const SizedBox(
+                    height: 10,
                   ),
-                  decoration: const InputDecoration(
-                      hintText: 'Enter a rating',
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 3)),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 1)),
-                      hintStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.black)),
-                ),
-              ],
+                  DropdownButton<String>(
+                      items: _rating.map((String val) {
+                        return DropdownMenuItem<String>(
+                          value: val,
+                          child: new Text(val),
+                        );
+                      }).toList(),
+                      hint: Text(_selectedRating),
+                      onChanged: (newVal) {
+                        _selectedRating = newVal;
+                        setState(() {});
+                      }),
+                  if (_selectedRating == '1') ...[
+                    const Icon(Icons.star, color: Colors.yellow)
+                  ] else if (_selectedRating == '2') ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow)
+                      ],
+                    )
+                  ] else if (_selectedRating == '3') ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow)
+                      ],
+                    )
+                  ] else if (_selectedRating == '4') ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow),
+                      ],
+                    )
+                  ] else if (_selectedRating == '5') ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow)
+                      ],
+                    )
+                  ]
+                ],
+              ),
             ),
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                      child: const Text('Cansle'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      }),
+                  TextButton(
+                      child: const Text('Approve'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        FirebaseFirestore.instance
+                            .collection('Hotel comment')
+                            .add({
+                          'Comment': _commentController.text,
+                          'Rating': _selectedRating,
+                          'Hotel': widget.HotelName,
+                          'UserName': user!.displayName,
+                        });
+                      }),
+                ],
+              ),
+            ],
           ),
-          actions: <Widget>[
-            TextButton(
-                child: const Text('Approve'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  FirebaseFirestore.instance.collection('Hotel comment').add({
-                    'Comment': _commentController.text,
-                    'Rating': _ratingController.text,
-                    'Hotel': widget.HotelName,
-                    'UserName': user!.displayName,
-                  });
-                }),
-          ],
         );
       },
     );

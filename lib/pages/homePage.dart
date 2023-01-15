@@ -82,10 +82,10 @@ class CustomBarWidget extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.only(top: 15),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Text(
-                        'Hi ${user!.displayName}! \n Where do you want to Travel?',
+                        'Hi ${user!.displayName}! \nWhere do you want to go?',
                         style: TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,

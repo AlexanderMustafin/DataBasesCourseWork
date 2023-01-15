@@ -163,7 +163,7 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       IncludedIconWidget(
                         icon: Icons.flight,
                         name: 'Flight',
@@ -226,7 +226,9 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                       ),
                       IconButton(
                         onPressed: () {
-                          addComment();
+                          setState(() {
+                            addComment();
+                          });
                         },
                         icon: const Icon(Icons.add_comment),
                       )
@@ -239,6 +241,26 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                           return const Text('Something went wrong!');
                         } else if (snapshot.hasData) {
                           final comment = snapshot.data!;
+                          if (comment.isEmpty) {
+                            return Center(
+                              child: Column(
+                                children: const [
+                                  Text(
+                                    'There are no comments yet.',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Text(
+                                    'Be the first to leave it',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
                           return SizedBox(
                             height: 200,
                             child: ListView(
@@ -389,78 +411,127 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
       );
 
   Future<void> addComment() async {
+    List<String> _rating = ['1', '2', '3', '4', '5'];
+    dynamic _selectedRating = 'Choos the rating';
     final User? user = fAuth.currentUser;
     TextEditingController _commentController = TextEditingController();
-    TextEditingController _ratingController = TextEditingController();
+
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Comment'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                const Text('Enter your comment'),
-                TextField(
-                  controller: _commentController,
-                  obscureText: false,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.black54,
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            title: const Text('Comment'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  const Text('Enter your comment'),
+                  TextField(
+                    controller: _commentController,
+                    obscureText: false,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      color: Colors.black54,
+                    ),
+                    decoration: const InputDecoration(
+                        hintText: 'Enter a comment',
+                        focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 3)),
+                        enabledBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.black, width: 1)),
+                        hintStyle: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                            color: Colors.black)),
                   ),
-                  decoration: const InputDecoration(
-                      hintText: 'Enter a comment',
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 3)),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 1)),
-                      hintStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.black)),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextField(
-                  controller: _ratingController,
-                  obscureText: false,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    color: Colors.black54,
+                  const SizedBox(
+                    height: 10,
                   ),
-                  decoration: const InputDecoration(
-                      hintText: 'Enter a rating',
-                      focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 3)),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 1)),
-                      hintStyle: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.black)),
-                ),
-              ],
+                  DropdownButton<String>(
+                      items: _rating.map((String val) {
+                        return DropdownMenuItem<String>(
+                          value: val,
+                          child: new Text(val),
+                        );
+                      }).toList(),
+                      hint: Text(_selectedRating),
+                      onChanged: (newVal) {
+                        _selectedRating = newVal;
+                        setState(() {});
+                      }),
+                  if (_selectedRating == '1') ...[
+                    const Icon(Icons.star, color: Colors.yellow)
+                  ] else if (_selectedRating == '2') ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow)
+                      ],
+                    )
+                  ] else if (_selectedRating == '3') ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow)
+                      ],
+                    )
+                  ] else if (_selectedRating == '4') ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow),
+                      ],
+                    )
+                  ] else if (_selectedRating == '5') ...[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const [
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow),
+                        Icon(Icons.star, color: Colors.yellow)
+                      ],
+                    )
+                  ]
+                ],
+              ),
             ),
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TextButton(
+                      child: const Text('Cansle'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      }),
+                  TextButton(
+                      child: const Text('Approve'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        FirebaseFirestore.instance
+                            .collection('Note comment')
+                            .add({
+                          'Comment': _commentController.text,
+                          'Rating': _selectedRating,
+                          'Town': widget.cityName,
+                          'UserName': user!.displayName,
+                        });
+                      }),
+                ],
+              ),
+            ],
           ),
-          actions: <Widget>[
-            TextButton(
-                child: const Text('Approve'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  FirebaseFirestore.instance.collection('Note comment').add({
-                    'Comment': _commentController.text,
-                    'Rating': _ratingController.text,
-                    'Town': widget.cityName,
-                    'UserName': user!.displayName,
-                  });
-                }),
-          ],
         );
       },
     );
