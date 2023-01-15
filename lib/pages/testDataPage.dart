@@ -1,5 +1,7 @@
 import 'package:data_bases_project/database/database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart';
 
 class Data with ChangeNotifier {
   String _data = '';
@@ -14,27 +16,34 @@ class Data with ChangeNotifier {
 }
 
 class TestDataWidget extends StatelessWidget {
-  const TestDataWidget({super.key});
+  final latitude;
+  final longitude;
+  const TestDataWidget([this.latitude, this.longitude]);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('All country data')),
-      body: StreamBuilder<List<Country>>(
-        stream: readCountry(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('Something went wrong!');
-          } else if (snapshot.hasData) {
-            final countrys = snapshot.data!;
-
-            return ListView(
-              children: countrys.map(buildData).toList(),
-            );
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        },
+      appBar: AppBar(),
+      body: Center(
+        child: Container(
+          child: Column(
+            children: [
+              Flexible(
+                child: FlutterMap(
+                  options:
+                      MapOptions(center: LatLng(latitude, longitude), zoom: 17),
+                  children: [
+                    TileLayer(
+                      urlTemplate:
+                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      userAgentPackageName: 'com.example.app',
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

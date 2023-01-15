@@ -15,6 +15,8 @@ class HotelDescriprionWidget extends StatefulWidget {
     required this.townName,
     required this.pictures,
     this.rating,
+    this.latitude,
+    this.longitude,
   });
   final HotelName;
   final descriprion;
@@ -22,6 +24,8 @@ class HotelDescriprionWidget extends StatefulWidget {
   final townName;
   final pictures;
   final rating;
+  final double? latitude;
+  final double? longitude;
 
   @override
   State<HotelDescriprionWidget> createState() => _HotelDescriprionWidgetState();
@@ -127,17 +131,36 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                                 ],
                               ),
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  const Icon(
-                                    Icons.location_city,
-                                    size: 35,
-                                    color: Colors.white,
-                                  ),
-                                  Text(widget.townName,
-                                      style: const TextStyle(
-                                        fontSize: 20,
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.location_city,
+                                        size: 35,
                                         color: Colors.white,
-                                      )),
+                                      ),
+                                      Text(widget.townName,
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            color: Colors.white,
+                                          )),
+                                    ],
+                                  ),
+                                  IconButton(
+                                    color: Colors.white,
+                                    icon: Icon(Icons.map_rounded),
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                TestDataWidget(widget.latitude,
+                                                    widget.longitude)),
+                                      );
+                                    },
+                                  ),
                                 ],
                               )
                             ],
@@ -571,53 +594,5 @@ class HotelCardWidget extends StatelessWidget {
             )
           ],
         ));
-  }
-}
-
-class IncludedIconWidget extends StatelessWidget {
-  final icon;
-  final name;
-  final scrollController;
-  double value;
-  IncludedIconWidget(
-      {required this.icon,
-      required this.name,
-      required this.scrollController,
-      required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          SizedBox(height: 24),
-          CircleAvatar(
-            radius: 36,
-            backgroundColor: const Color(0xff356dfa),
-            child: CircleAvatar(
-              radius: 33,
-              backgroundColor: Colors.white,
-              child: CircleAvatar(
-                radius: 30,
-                backgroundColor: const Color(0xff356dfa),
-                child: IconButton(
-                  icon: Icon(
-                    icon,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    scrollController.animateTo(value - 200.00,
-                        duration: const Duration(milliseconds: 400),
-                        curve: Curves.easeIn);
-                  },
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 5),
-          Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
-        ],
-      ),
-    );
   }
 }

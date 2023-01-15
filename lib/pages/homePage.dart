@@ -23,7 +23,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool enteredParameters = false;
   late final List<Widget> _widgetOptions = <Widget>[
     const FirstScreenWidget(),
-    const TestDataWidget(),
+    const TestDataWidget(20.0, 20.0),
     const FavoriteCitiesWidget(),
   ];
 

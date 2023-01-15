@@ -96,6 +96,8 @@ class Hotel {
   final String? picture;
   final String? rating;
   final String? pictures;
+  final double? latitude;
+  final double? longitude;
 
   Hotel({
     required this.descriotion,
@@ -104,6 +106,8 @@ class Hotel {
     required this.picture,
     required this.rating,
     required this.pictures,
+    this.latitude,
+    this.longitude,
   });
 
   static Hotel fromJsonHotel(Map<String, dynamic> json) => Hotel(
@@ -113,6 +117,8 @@ class Hotel {
         picture: json['Picture'] ?? '',
         rating: json['Rating'] ?? '*',
         pictures: json['Picture_2'] ?? '',
+        longitude: json['Longitude'] ?? -49.089846,
+        latitude: json['Latitude'] ?? -21.805228,
       );
 }
 
@@ -124,6 +130,8 @@ class Cafe {
   final String? picture;
   final String? pictures;
   final String? rating;
+  final double latitude;
+  final double longitude;
 
   Cafe({
     required this.descriotion,
@@ -133,6 +141,8 @@ class Cafe {
     required this.picture,
     required this.pictures,
     required this.rating,
+    required this.latitude,
+    required this.longitude,
   });
 
   static Cafe fromJsonCafe(Map<String, dynamic> json) => Cafe(
@@ -143,6 +153,8 @@ class Cafe {
         picture: json['Picture'] ?? '',
         pictures: json['Picture_2'] ?? '',
         rating: json['Rating'] ?? '',
+        longitude: json['Longitude'] ?? -49.089846,
+        latitude: json['Latitude'] ?? -21.805228,
       );
 }
 
@@ -154,6 +166,8 @@ class Attraction {
   final String? picture;
   final String? rating;
   final String? pictures;
+  final double longitude;
+  final double latitude;
 
   Attraction({
     required this.descriotion,
@@ -163,6 +177,8 @@ class Attraction {
     required this.picture,
     required this.pictures,
     required this.rating,
+    required this.latitude,
+    required this.longitude,
   });
 
   static Attraction fromJsonAttraction(Map<String, dynamic> json) => Attraction(
@@ -173,6 +189,8 @@ class Attraction {
         picture: json['Picture'] ?? '',
         rating: json['Rating'] ?? '',
         pictures: json['Picture_2'] ?? '',
+        longitude: json['Longitude'] ?? -49.089846,
+        latitude: json['Latitude'] ?? -21.805228,
       );
 }
 
@@ -213,9 +231,10 @@ class Country {
       );
 
   static Town fromJsonTown(Map<String, dynamic> json) => Town(
-      description: json['Description'] ?? '',
-      idCountry: json['Id country'] ?? '',
-      name: json['Name'] ?? '',
-      pucture: json['Picture'] ?? '',
-      isFavorite: json['isFavorite'] ?? false);
+        description: json['Description'] ?? '',
+        idCountry: json['Id country'] ?? '',
+        name: json['Name'] ?? '',
+        pucture: json['Picture'] ?? '',
+        isFavorite: json['isFavorite'] ?? false,
+      );
 }

@@ -390,6 +390,8 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
         rating: cafe.rating,
         townName: widget.cityName,
         picteures: cafe.pictures,
+        latitude: cafe.latitude,
+        longitude: cafe.longitude,
       );
 
   Widget builtHotleCardWidget(Hotel hotel) => HotelCardWidget(
@@ -399,6 +401,8 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
         rating: hotel.rating,
         townName: widget.cityName,
         pictures: hotel.pictures,
+        latitude: hotel.latitude,
+        longitude: hotel.longitude,
       );
 
   Widget builtAttractionCardWidget(Attraction attraction) => AttractionWidget(
@@ -408,6 +412,8 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
         rating: attraction.rating,
         townName: widget.cityName,
         picteures: attraction.pictures,
+        longitude: attraction.longitude,
+        latitude: attraction.latitude,
       );
 
   Future<void> addComment() async {
@@ -598,6 +604,8 @@ class HotelCardWidget extends StatelessWidget {
   final rating;
   final townName;
   final pictures;
+  final latitude;
+  final longitude;
   const HotelCardWidget({
     super.key,
     required this.description,
@@ -606,6 +614,8 @@ class HotelCardWidget extends StatelessWidget {
     required this.rating,
     required this.townName,
     required this.pictures,
+    required this.latitude,
+    required this.longitude,
   });
 
   @override
@@ -665,6 +675,8 @@ class HotelCardWidget extends StatelessWidget {
                                   HotelName: name,
                                   pictures: pictures,
                                   rating: rating,
+                                  latitude: latitude,
+                                  longitude: longitude,
                                 )));
                   },
                   style: ButtonStyle(
@@ -731,6 +743,8 @@ class RestaurantsWidget extends StatelessWidget {
   final rating;
   final townName;
   final picteures;
+  final latitude;
+  final longitude;
   const RestaurantsWidget({
     super.key,
     required this.description,
@@ -739,6 +753,8 @@ class RestaurantsWidget extends StatelessWidget {
     required this.rating,
     required this.townName,
     required this.picteures,
+    required this.latitude,
+    required this.longitude,
   });
 
   @override
@@ -793,6 +809,8 @@ class RestaurantsWidget extends StatelessWidget {
                                   HotelName: name,
                                   pictures: picteures,
                                   rating: rating,
+                                  latitude: latitude,
+                                  longitude: longitude,
                                 )));
                   },
                   style: ButtonStyle(
@@ -820,6 +838,8 @@ class AttractionWidget extends StatelessWidget {
   final rating;
   final townName;
   final picteures;
+  final latitude;
+  final longitude;
   const AttractionWidget({
     super.key,
     required this.description,
@@ -828,6 +848,8 @@ class AttractionWidget extends StatelessWidget {
     required this.rating,
     required this.townName,
     required this.picteures,
+    required this.latitude,
+    required this.longitude,
   });
 
   @override
@@ -875,6 +897,8 @@ class AttractionWidget extends StatelessWidget {
                                   descriprion: description,
                                   HotelName: name,
                                   pictures: picteures,
+                                  longitude: longitude,
+                                  latitude: latitude,
                                 )));
                   },
                   style: ButtonStyle(
