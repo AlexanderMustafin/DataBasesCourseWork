@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_bases_project/database/database.dart';
-import 'package:data_bases_project/pages/testDataPage.dart';
+import 'package:data_bases_project/pages/mapWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -155,9 +155,9 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) =>
-                                                TestDataWidget(widget.latitude,
-                                                    widget.longitude)),
+                                            builder: (context) => MapWidget(
+                                                widget.latitude,
+                                                widget.longitude)),
                                       );
                                     },
                                   ),

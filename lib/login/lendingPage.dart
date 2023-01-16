@@ -2,7 +2,7 @@ import 'package:data_bases_project/login/auth.dart';
 import 'package:data_bases_project/login/userWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../pages/homePage.dart';
+import '../pages/startPage.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});

@@ -1,7 +1,7 @@
 import 'package:data_bases_project/database/database.dart';
 import 'package:data_bases_project/login/services/authServ.dart';
 import 'package:data_bases_project/pages/cityDescriprion.dart';
-import 'package:data_bases_project/pages/testDataPage.dart';
+import 'package:data_bases_project/pages/mapWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

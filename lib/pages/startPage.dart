@@ -3,11 +3,10 @@ import 'package:data_bases_project/blocs/auth/bloc/auth_bloc.dart';
 import 'package:data_bases_project/login/services/authServ.dart';
 import 'package:data_bases_project/pages/signIn.dart';
 import 'package:data_bases_project/pages/infoPage.dart';
-import 'package:data_bases_project/pages/testDataPage.dart';
+import 'package:data_bases_project/pages/mapWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 import 'favoriteCities.dart';
 
@@ -23,7 +22,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool enteredParameters = false;
   late final List<Widget> _widgetOptions = <Widget>[
     const FirstScreenWidget(),
-    const TestDataWidget(20.0, 20.0),
+    const MapWidget(20.0, 20.0),
     const FavoriteCitiesWidget(),
   ];
 

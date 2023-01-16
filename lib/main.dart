@@ -1,8 +1,8 @@
 import 'package:data_bases_project/login/userWidget.dart';
 import 'package:data_bases_project/login/services/authServ.dart';
 import 'package:data_bases_project/pages/signIn.dart';
-import 'package:data_bases_project/pages/homePage.dart';
-import 'package:data_bases_project/pages/testDataPage.dart';
+import 'package:data_bases_project/pages/startPage.dart';
+import 'package:data_bases_project/pages/mapWidget.dart';
 import 'package:data_bases_project/repositories/auth/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
