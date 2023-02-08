@@ -1,5 +1,6 @@
 import 'package:data_bases_project/database/database.dart';
 import 'package:data_bases_project/pages/cityDescriprion.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FavoriteCitiesWidget extends StatefulWidget {
@@ -68,7 +69,7 @@ class CardWidget extends StatelessWidget {
       onTap: () {
         Navigator.push(
             context,
-            MaterialPageRoute(
+            CupertinoPageRoute(
                 builder: (context) => CityDescriprionWidget(
                       cityName: title,
                       descriprion: descriprion,

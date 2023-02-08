@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_bases_project/database/database.dart';
 import 'package:data_bases_project/pages/mapWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -40,9 +41,14 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         body: SingleChildScrollView(
           child: Container(
+            key: Key(Theme.of(context).brightness.toString()),
             decoration: BoxDecoration(
                 image: DecorationImage(
-              image: AssetImage('images/bgOff20.jpg'),
+              image: AssetImage(
+                Theme.of(context).brightness == Brightness.light
+                    ? 'images/bgOff20.jpg'
+                    : 'images/bgOff20Dark.jpg',
+              ),
               repeat: ImageRepeat.repeatY,
             )),
             child: Column(
@@ -150,11 +156,11 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                                   ),
                                   IconButton(
                                     color: Colors.white,
-                                    icon: Icon(Icons.map_rounded),
+                                    icon: const Icon(Icons.map_rounded),
                                     onPressed: () {
                                       Navigator.push(
                                         context,
-                                        MaterialPageRoute(
+                                        CupertinoPageRoute(
                                             builder: (context) => MapWidget(
                                                 widget.latitude,
                                                 widget.longitude)),
@@ -169,7 +175,8 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                       ),
                     )),
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -220,9 +227,17 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                           itemBuilder: (BuildContext context, int index) {
                             return GestureDetector(
                               onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
+                                showGeneralDialog(
+                                  context: context,
+                                  pageBuilder: (ctx, a1, a2) {
+                                    return Container();
+                                  },
+                                  transitionBuilder: (ctx, a1, a2, child) {
+                                    var curve =
+                                        Curves.easeInOut.transform(a1.value);
+                                    return Transform.scale(
+                                        scale: curve,
+                                        child: AlertDialog(
                                           contentPadding: EdgeInsets.all(0),
                                           content: Stack(
                                             alignment: Alignment.center,
@@ -235,6 +250,10 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                                             ],
                                           ),
                                         ));
+                                  },
+                                  transitionDuration:
+                                      const Duration(milliseconds: 450),
+                                );
                               },
                               child: InteractiveViewer(
                                 maxScale: 4,
@@ -399,124 +418,132 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
     dynamic _selectedRating = 'Choos the rating';
     final User? user = fAuth.currentUser;
     TextEditingController _commentController = TextEditingController();
-    return showDialog<void>(
+    return showGeneralDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) => AlertDialog(
-            title: const Text('Comment'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  const Text('Enter your comment'),
-                  TextField(
-                    controller: _commentController,
-                    obscureText: false,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.black54,
+      pageBuilder: (ctx, a1, a2) {
+        return Container();
+      },
+      transitionBuilder: (ctx, a1, a2, child) {
+        var curve = Curves.easeInOut.transform(a1.value);
+        return Transform.scale(
+          scale: curve,
+          child: StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              title: const Text('Comment'),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    const Text('Enter your comment'),
+                    TextField(
+                      controller: _commentController,
+                      obscureText: false,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.black54,
+                      ),
+                      decoration: const InputDecoration(
+                          hintText: 'Enter a comment',
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 3)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 1)),
+                          hintStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.black)),
                     ),
-                    decoration: const InputDecoration(
-                        hintText: 'Enter a comment',
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 3)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 1)),
-                        hintStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.black)),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  DropdownButton<String>(
-                      items: _rating.map((String val) {
-                        return DropdownMenuItem<String>(
-                          value: val,
-                          child: new Text(val),
-                        );
-                      }).toList(),
-                      hint: Text(_selectedRating),
-                      onChanged: (newVal) {
-                        _selectedRating = newVal;
-                        setState(() {});
-                      }),
-                  if (_selectedRating == '1') ...[
-                    const Icon(Icons.star, color: Colors.yellow)
-                  ] else if (_selectedRating == '2') ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow)
-                      ],
-                    )
-                  ] else if (_selectedRating == '3') ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow)
-                      ],
-                    )
-                  ] else if (_selectedRating == '4') ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow),
-                      ],
-                    )
-                  ] else if (_selectedRating == '5') ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow)
-                      ],
-                    )
-                  ]
-                ],
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    DropdownButton<String>(
+                        items: _rating.map((String val) {
+                          return DropdownMenuItem<String>(
+                            value: val,
+                            child: new Text(val),
+                          );
+                        }).toList(),
+                        hint: Text(_selectedRating),
+                        onChanged: (newVal) {
+                          _selectedRating = newVal;
+                          setState(() {});
+                        }),
+                    if (_selectedRating == '1') ...[
+                      const Icon(Icons.star, color: Colors.yellow)
+                    ] else if (_selectedRating == '2') ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow)
+                        ],
+                      )
+                    ] else if (_selectedRating == '3') ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow)
+                        ],
+                      )
+                    ] else if (_selectedRating == '4') ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                        ],
+                      )
+                    ] else if (_selectedRating == '5') ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow)
+                        ],
+                      )
+                    ]
+                  ],
+                ),
               ),
+              actions: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                        child: const Text('Cansle'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        }),
+                    TextButton(
+                        child: const Text('Approve'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          FirebaseFirestore.instance
+                              .collection('Hotel comment')
+                              .add({
+                            'Comment': _commentController.text,
+                            'Rating': _selectedRating,
+                            'Hotel': widget.HotelName,
+                            'UserName': user!.displayName,
+                          });
+                        }),
+                  ],
+                ),
+              ],
             ),
-            actions: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                      child: const Text('Cansle'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      }),
-                  TextButton(
-                      child: const Text('Approve'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        FirebaseFirestore.instance
-                            .collection('Hotel comment')
-                            .add({
-                          'Comment': _commentController.text,
-                          'Rating': _selectedRating,
-                          'Hotel': widget.HotelName,
-                          'UserName': user!.displayName,
-                        });
-                      }),
-                ],
-              ),
-            ],
           ),
         );
       },
+      transitionDuration: const Duration(milliseconds: 450),
     );
   }
 }

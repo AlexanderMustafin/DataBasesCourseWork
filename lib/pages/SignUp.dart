@@ -65,7 +65,7 @@ class _SignInState extends State<SignUp> {
                         height: 100,
                       ),
                       const Text(
-                        'Traveller',
+                        'Traveler', 
                         style: TextStyle(
                             fontSize: 45,
                             fontWeight: FontWeight.bold,

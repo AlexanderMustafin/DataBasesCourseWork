@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_bases_project/database/database.dart';
 import 'package:data_bases_project/login/services/authServ.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'descriptionWidget.dart';
@@ -45,332 +46,338 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
-      child: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-          image: AssetImage('images/bgOff20.jpg'),
-          repeat: ImageRepeat.repeatY,
-        )),
-        child: Column(
-          children: [
-            Container(
-                height: 300,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(16),
-                    image: DecorationImage(
-                        image: NetworkImage(widget.imageURL),
-                        fit: BoxFit.cover)),
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(
-                              Icons.arrow_back,
-                              size: 35,
-                            ),
-                            color: Colors.white,
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              setState(() {
-                                if (isFavorite == true) {
-                                  final docTown = FirebaseFirestore.instance
-                                      .collection('Town')
-                                      .doc(widget.cityName);
-                                  docTown.update({'isFavorite': false});
-                                  isFavorite = false;
-                                } else {
-                                  final docTown = FirebaseFirestore.instance
-                                      .collection('Town')
-                                      .doc(widget.cityName);
-                                  docTown.update({'isFavorite': true});
-                                  isFavorite = true;
-                                }
-                              });
-                            },
-                            icon: const Icon(Icons.favorite),
-                            color: isFavorite ? Colors.red : Colors.white,
-                          ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.cityName,
-                            style: const TextStyle(
-                              fontSize: 30,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.location_on,
-                                    color: Colors.white,
-                                  ),
-                                  Text(widget.parentCounry,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                      )),
-                                ],
-                              ),
-                              const Icon(
-                                Icons.location_city,
-                                size: 35,
-                                color: Colors.white,
-                              )
-                            ],
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                )),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Included',
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xff151a22),
-                    ),
-                  ),
-                  const Text(
-                    'For more details press on the icons.',
-                    style: TextStyle(fontSize: 18, color: Color(0xffaeb8c4)),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      IncludedIconWidget(
-                        icon: Icons.flight,
-                        name: 'Flight',
-                      ),
-                      IncludedIconWidget(
-                        icon: Icons.hotel,
-                        name: 'Hotels',
-                      ),
-                      IncludedIconWidget(
-                        icon: Icons.restaurant,
-                        name: 'Restaurants',
-                      ),
-                      IncludedIconWidget(
-                        icon: Icons.attractions,
-                        name: 'Attractions',
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text(
-                    'Description',
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xff151a22),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 10),
-                    decoration: BoxDecoration(
+      child: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 500),
+        child: Container(
+          key: Key(Theme.of(context).brightness.toString()),
+          decoration: BoxDecoration(
+              image: DecorationImage(
+            image: AssetImage(
+              Theme.of(context).brightness == Brightness.light
+                  ? 'images/bgOff20.jpg'
+                  : 'images/bgOff20Dark.jpg',
+            ),
+            repeat: ImageRepeat.repeatY,
+          )),
+          child: Column(
+            children: [
+              Container(
+                  height: 300,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
-                      color: const Color(0xffe8eef7),
+                      image: DecorationImage(
+                          image: NetworkImage(widget.imageURL),
+                          fit: BoxFit.cover)),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 15),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              icon: const Icon(
+                                Icons.arrow_back,
+                                size: 35,
+                              ),
+                              color: Colors.white,
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  if (isFavorite == true) {
+                                    final docTown = FirebaseFirestore.instance
+                                        .collection('Town')
+                                        .doc(widget.cityName);
+                                    docTown.update({'isFavorite': false});
+                                    isFavorite = false;
+                                  } else {
+                                    final docTown = FirebaseFirestore.instance
+                                        .collection('Town')
+                                        .doc(widget.cityName);
+                                    docTown.update({'isFavorite': true});
+                                    isFavorite = true;
+                                  }
+                                });
+                              },
+                              icon: const Icon(Icons.favorite),
+                              color: isFavorite ? Colors.red : Colors.white,
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.cityName,
+                              style: const TextStyle(
+                                fontSize: 30,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.location_on,
+                                      color: Colors.white,
+                                    ),
+                                    Text(widget.parentCounry,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                        )),
+                                  ],
+                                ),
+                                const Icon(
+                                  Icons.location_city,
+                                  size: 35,
+                                  color: Colors.white,
+                                )
+                              ],
+                            ),
+                          ],
+                        )
+                      ],
                     ),
-                    width: double.infinity,
-                    child: Text(
-                      widget.descriprion,
-                      style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff4a627f),
+                  )),
+              Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Included',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Rating & Reviews',
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xff151a22),
+                    const Text(
+                      'For more details press on the icons.',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        IncludedIconWidget(
+                          icon: Icons.flight,
+                          name: 'Flight',
+                        ),
+                        IncludedIconWidget(
+                          icon: Icons.hotel,
+                          name: 'Hotels',
+                        ),
+                        IncludedIconWidget(
+                          icon: Icons.restaurant,
+                          name: 'Restaurants',
+                        ),
+                        IncludedIconWidget(
+                          icon: Icons.attractions,
+                          name: 'Attractions',
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      'Description',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 10),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(16),
+                        color: const Color(0xffe8eef7),
+                      ),
+                      width: double.infinity,
+                      child: Text(
+                        widget.descriprion,
+                        style: const TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff4a627f),
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            addComment();
-                          });
-                        },
-                        icon: const Icon(Icons.add_comment),
-                      )
-                    ],
-                  ),
-                  StreamBuilder<List<Comment>>(
-                      stream: readComment(widget.cityName),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return const Text('Something went wrong!');
-                        } else if (snapshot.hasData) {
-                          final comment = snapshot.data!;
-                          if (comment.isEmpty) {
-                            return Center(
-                              child: Column(
-                                children: const [
-                                  Text(
-                                    'There are no comments yet.',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                  Text(
-                                    'Be the first to leave it',
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Rating & Reviews',
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              addComment();
+                            });
+                          },
+                          icon: const Icon(Icons.add_comment),
+                        )
+                      ],
+                    ),
+                    StreamBuilder<List<Comment>>(
+                        stream: readComment(widget.cityName),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return const Text('Something went wrong!');
+                          } else if (snapshot.hasData) {
+                            final comment = snapshot.data!;
+                            if (comment.isEmpty) {
+                              return Center(
+                                child: Column(
+                                  children: const [
+                                    Text(
+                                      'There are no comments yet.',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    Text(
+                                      'Be the first to leave it',
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                            return SizedBox(
+                              height: 200,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: comment
+                                    .map(builtCommentCardWidget)
+                                    .toList(),
                               ),
                             );
+                          } else {
+                            return const Center(
+                                child: CircularProgressIndicator());
                           }
-                          return SizedBox(
-                            height: 200,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children:
-                                  comment.map(builtCommentCardWidget).toList(),
-                            ),
-                          );
-                        } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                      }),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text(
-                    'Hotels',
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xff151a22),
+                        }),
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  StreamBuilder<List<Hotel>>(
-                      stream: readHotel(widget.cityName),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return const Text('Something went wrong!');
-                        } else if (snapshot.hasData) {
-                          final hotels = snapshot.data!;
-                          return SizedBox(
-                            height: 140,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children:
-                                  hotels.map(builtHotleCardWidget).toList(),
-                            ),
-                          );
-                        } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                      }),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text(
-                    'Restaurants',
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xff151a22),
+                    const Text(
+                      'Hotels',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
-                  ),
-                  StreamBuilder<List<Cafe>>(
-                      stream: readCafe(widget.cityName),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return const Text('Something went wrong!');
-                        } else if (snapshot.hasData) {
-                          final cafes = snapshot.data!;
-                          return SizedBox(
-                            height: 140,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: cafes.map(builtCafeCardWidget).toList(),
-                            ),
-                          );
-                        } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                      }),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text(
-                    'Attraction',
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w800,
-                      color: Color(0xff151a22),
+                    StreamBuilder<List<Hotel>>(
+                        stream: readHotel(widget.cityName),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return const Text('Something went wrong!');
+                          } else if (snapshot.hasData) {
+                            final hotels = snapshot.data!;
+                            return SizedBox(
+                              height: 140,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children:
+                                    hotels.map(builtHotleCardWidget).toList(),
+                              ),
+                            );
+                          } else {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                        }),
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  StreamBuilder<List<Attraction>>(
-                      stream: readAttraction(widget.cityName),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return const Text('Something went wrong!');
-                        } else if (snapshot.hasData) {
-                          final attraction = snapshot.data!;
-                          return SizedBox(
-                            height: 140,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              children: attraction
-                                  .map(builtAttractionCardWidget)
-                                  .toList(),
-                            ),
-                          );
-                        } else {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        }
-                      }),
-                ],
+                    const Text(
+                      'Restaurants',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    StreamBuilder<List<Cafe>>(
+                        stream: readCafe(widget.cityName),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return const Text('Something went wrong!');
+                          } else if (snapshot.hasData) {
+                            final cafes = snapshot.data!;
+                            return SizedBox(
+                              height: 140,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children:
+                                    cafes.map(builtCafeCardWidget).toList(),
+                              ),
+                            );
+                          } else {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                        }),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      'Attraction',
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xff151a22),
+                      ),
+                    ),
+                    StreamBuilder<List<Attraction>>(
+                        stream: readAttraction(widget.cityName),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return const Text('Something went wrong!');
+                          } else if (snapshot.hasData) {
+                            final attraction = snapshot.data!;
+                            return SizedBox(
+                              height: 140,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                children: attraction
+                                    .map(builtAttractionCardWidget)
+                                    .toList(),
+                              ),
+                            );
+                          } else {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          }
+                        }),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     ));
@@ -422,124 +429,132 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
     final User? user = fAuth.currentUser;
     TextEditingController _commentController = TextEditingController();
 
-    return showDialog<void>(
+    return showGeneralDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) => AlertDialog(
-            title: const Text('Comment'),
-            content: SingleChildScrollView(
-              child: ListBody(
-                children: <Widget>[
-                  const Text('Enter your comment'),
-                  TextField(
-                    controller: _commentController,
-                    obscureText: false,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      color: Colors.black54,
+      pageBuilder: (ctx, a1, a2) {
+        return Container();
+      },
+      transitionBuilder: (ctx, a1, a2, child) {
+        var curve = Curves.easeInOut.transform(a1.value);
+        return Transform.scale(
+          scale: curve,
+          child: StatefulBuilder(
+            builder: (context, setState) => AlertDialog(
+              title: const Text('Comment'),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    const Text('Enter your comment'),
+                    TextField(
+                      controller: _commentController,
+                      obscureText: false,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: Colors.black54,
+                      ),
+                      decoration: const InputDecoration(
+                          hintText: 'Enter a comment',
+                          focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 3)),
+                          enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 1)),
+                          hintStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.black)),
                     ),
-                    decoration: const InputDecoration(
-                        hintText: 'Enter a comment',
-                        focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 3)),
-                        enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(color: Colors.black, width: 1)),
-                        hintStyle: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.black)),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  DropdownButton<String>(
-                      items: _rating.map((String val) {
-                        return DropdownMenuItem<String>(
-                          value: val,
-                          child: new Text(val),
-                        );
-                      }).toList(),
-                      hint: Text(_selectedRating),
-                      onChanged: (newVal) {
-                        _selectedRating = newVal;
-                        setState(() {});
-                      }),
-                  if (_selectedRating == '1') ...[
-                    const Icon(Icons.star, color: Colors.yellow)
-                  ] else if (_selectedRating == '2') ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow)
-                      ],
-                    )
-                  ] else if (_selectedRating == '3') ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow)
-                      ],
-                    )
-                  ] else if (_selectedRating == '4') ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow),
-                      ],
-                    )
-                  ] else if (_selectedRating == '5') ...[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow),
-                        Icon(Icons.star, color: Colors.yellow)
-                      ],
-                    )
-                  ]
-                ],
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    DropdownButton<String>(
+                        items: _rating.map((String val) {
+                          return DropdownMenuItem<String>(
+                            value: val,
+                            child: new Text(val),
+                          );
+                        }).toList(),
+                        hint: Text(_selectedRating),
+                        onChanged: (newVal) {
+                          _selectedRating = newVal;
+                          setState(() {});
+                        }),
+                    if (_selectedRating == '1') ...[
+                      const Icon(Icons.star, color: Colors.yellow)
+                    ] else if (_selectedRating == '2') ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow)
+                        ],
+                      )
+                    ] else if (_selectedRating == '3') ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow)
+                        ],
+                      )
+                    ] else if (_selectedRating == '4') ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                        ],
+                      )
+                    ] else if (_selectedRating == '5') ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow)
+                        ],
+                      )
+                    ]
+                  ],
+                ),
               ),
+              actions: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                        child: const Text('Cansle'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        }),
+                    TextButton(
+                        child: const Text('Approve'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          FirebaseFirestore.instance
+                              .collection('Note comment')
+                              .add({
+                            'Comment': _commentController.text,
+                            'Rating': _selectedRating,
+                            'Town': widget.cityName,
+                            'UserName': user!.displayName,
+                          });
+                        }),
+                  ],
+                ),
+              ],
             ),
-            actions: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                      child: const Text('Cansle'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      }),
-                  TextButton(
-                      child: const Text('Approve'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        FirebaseFirestore.instance
-                            .collection('Note comment')
-                            .add({
-                          'Comment': _commentController.text,
-                          'Rating': _selectedRating,
-                          'Town': widget.cityName,
-                          'UserName': user!.displayName,
-                        });
-                      }),
-                ],
-              ),
-            ],
           ),
         );
       },
+      transitionDuration: const Duration(milliseconds: 450),
     );
   }
 
@@ -667,7 +682,7 @@ class HotelCardWidget extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        CupertinoPageRoute(
                             builder: (context) => HotelDescriprionWidget(
                                   townName: townName,
                                   imageURL: picture,
@@ -801,7 +816,7 @@ class RestaurantsWidget extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        CupertinoPageRoute(
                             builder: (context) => HotelDescriprionWidget(
                                   townName: townName,
                                   imageURL: picture,
@@ -890,7 +905,7 @@ class AttractionWidget extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                         context,
-                        MaterialPageRoute(
+                        CupertinoPageRoute(
                             builder: (context) => HotelDescriprionWidget(
                                   townName: townName,
                                   imageURL: picture,

@@ -3,6 +3,7 @@ import 'package:data_bases_project/login/services/authServ.dart';
 import 'package:data_bases_project/pages/cityDescriprion.dart';
 import 'package:data_bases_project/pages/mapWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,9 +29,14 @@ class _FirstScreenWidgetState extends State<FirstScreenWidget> {
         } else if (snapshot.hasData) {
           final towns = snapshot.data!;
           return Container(
+            key: Key(Theme.of(context).brightness.toString()),
             decoration: BoxDecoration(
                 image: DecorationImage(
-              image: AssetImage('images/bgOff20.jpg'),
+              image: AssetImage(
+                Theme.of(context).brightness == Brightness.light
+                    ? 'images/bgOff20.jpg'
+                    : 'images/bgOff20Dark.jpg',
+              ),
               repeat: ImageRepeat.repeatY,
             )),
             child: ListView(
@@ -81,7 +87,7 @@ class CardWidget extends StatelessWidget {
       onTap: () {
         Navigator.push(
             context,
-            MaterialPageRoute(
+            CupertinoPageRoute(
                 builder: (context) => CityDescriprionWidget(
                       cityName: title,
                       descriprion: descriprion,

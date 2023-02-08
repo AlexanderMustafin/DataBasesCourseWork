@@ -7,7 +7,9 @@ import 'package:data_bases_project/pages/mapWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
+import '../theme.dart';
 import 'favoriteCities.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -68,58 +70,86 @@ class CustomBarWidget extends StatelessWidget {
     return Scaffold(
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
-          return Container(
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage('images/appBarHeader.png'),
-                    fit: BoxFit.cover)),
-            width: double.infinity,
-            height: 160.0,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        'Hi ${user!.displayName}! \nWhere do you want to go?',
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+          return AnimatedSwitcher(
+            duration: const Duration(milliseconds: 500),
+            child: Container(
+              key: Key(Theme.of(context).brightness.toString()),
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage(
+                        Theme.of(context).brightness == Brightness.light
+                            ? 'images/appBarHeader.png'
+                            : 'images/appBarHeaderDark.png',
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          IconButton(
-                              onPressed: () {
-                                _logOut(context);
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const SignIn()),
+                      fit: BoxFit.cover)),
+              width: double.infinity,
+              height: 160.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Hi ${user!.displayName}! \nWhere do you want to go?',
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  _logOut(context);
+                                  Navigator.pushReplacementNamed(
+                                      context, 'SignIn');
+                                },
+                                icon: const Icon(
+                                  Icons.logout,
+                                  color: Colors.white,
+                                )),
+                            Consumer<ThemeProvider>(
+                              builder: (context, provider, child) {
+                                return IconButton(
+                                  onPressed: () {
+                                    if (provider.currentTheme == "light") {
+                                      provider.currentTheme = "dark";
+                                    } else if (provider.currentTheme ==
+                                        "dark") {
+                                      provider.currentTheme = "light";
+                                    } else {
+                                      provider.currentTheme = "system";
+                                    }
+                                    Provider.of<ThemeProvider>(context,
+                                            listen: false)
+                                        .changeTheme(provider.currentTheme);
+                                  },
+                                  icon: const Icon(
+                                    Icons.brightness_6,
+                                    color: Colors.white,
+                                  ),
                                 );
                               },
-                              icon: const Icon(
-                                Icons.logout,
-                                color: Colors.white,
-                              )),
-                        ],
-                      )
-                    ],
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    DropdownButtonExample(),
-                  ],
-                )
-              ],
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      DropdownButtonExample(),
+                    ],
+                  )
+                ],
+              ),
             ),
           );
         },
@@ -150,9 +180,8 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
         width: 190,
         height: 60,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-          color: const Color(0xff356dfa),
-        ),
+            borderRadius: BorderRadius.circular(30),
+            border: Border.all(color: Colors.white)),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         child: StreamBuilder(
           stream: FirebaseFirestore.instance.collection('Country').snapshots(),
@@ -183,16 +212,17 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
                 ),
                 value: selectedCurrency,
                 isExpanded: true,
-                dropdownColor: Color(0xff356dfa),
                 icon: const Icon(
                   Icons.arrow_downward,
                   color: Colors.white,
                 ),
                 elevation: 16,
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context).brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.white,
                 ),
                 underline: Container(
                   height: 0,
