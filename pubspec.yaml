@@ -51,6 +51,8 @@ dependencies:
   flutter_map: ^3.1.0
   latlong2: ^0.8.1
   shared_preferences: ^2.0.17
+  share_plus: ^6.3.0
+  another_flushbar: ^1.12.29
 
 dev_dependencies:
   flutter_test:

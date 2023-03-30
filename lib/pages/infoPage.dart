@@ -1,10 +1,10 @@
+import 'package:data_bases_project/blocs/bloc/cities_selections_bloc.dart';
 import 'package:data_bases_project/database/database.dart';
 import 'package:data_bases_project/login/services/authServ.dart';
-import 'package:data_bases_project/pages/cityDescriprion.dart';
 import 'package:data_bases_project/pages/mapWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class FirstScreenWidget extends StatefulWidget {
@@ -19,33 +19,40 @@ class FirstScreenWidget extends StatefulWidget {
 class _FirstScreenWidgetState extends State<FirstScreenWidget> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Town>>(
-      stream: readTown(context.watch<Data>().getData),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return const Text('Something went wrong!');
-        } else if (context.watch<Data>().getData == '') {
-          return AwaitWidget();
-        } else if (snapshot.hasData) {
-          final towns = snapshot.data!;
-          return Container(
-            key: Key(Theme.of(context).brightness.toString()),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              image: AssetImage(
-                Theme.of(context).brightness == Brightness.light
-                    ? 'images/bgOff20.jpg'
-                    : 'images/bgOff20Dark.jpg',
-              ),
-              repeat: ImageRepeat.repeatY,
-            )),
-            child: ListView(
-              children: towns.map(builtCardWidget).toList(),
-            ),
-          );
-        } else {
-          return const Center(child: CircularProgressIndicator());
-        }
+    return BlocBuilder<CitiesSelectionsBloc, CitiesSelectionsState>(
+      //initial readTown
+      builder: (context, state) {
+        create:
+        (_) => CitiesSelectionsBloc()..add(InitStateCitiesEvent());
+        return StreamBuilder<List<Town>>(
+          stream: readTown(context.watch<Data>().getData),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Text('Something went wrong!');
+            } else if (context.watch<Data>().getData == '') {
+              return AwaitWidget();
+            } else if (snapshot.hasData) {
+              final towns = snapshot.data!;
+              return Container(
+                key: Key(Theme.of(context).brightness.toString()),
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                  image: AssetImage(
+                    Theme.of(context).brightness == Brightness.light
+                        ? 'images/bgOff20.jpg'
+                        : 'images/bgOff20Dark.jpg',
+                  ),
+                  repeat: ImageRepeat.repeatY,
+                )),
+                child: ListView(
+                  children: towns.map(builtCardWidget).toList(),
+                ),
+              );
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          },
+        );
       },
     );
   }
@@ -53,7 +60,7 @@ class _FirstScreenWidgetState extends State<FirstScreenWidget> {
 
 Widget builtCardWidget(Town town) => CardWidget(
       title: town.name,
-      descriprion: town.description,
+      description: town.description,
       parentCountry: town.idCountry,
       imageURL: town.pucture,
       isFavorite: town.isFavorite,
@@ -61,43 +68,31 @@ Widget builtCardWidget(Town town) => CardWidget(
 
 class CardWidget extends StatelessWidget {
   final title;
-  final descriprion;
+  final description;
   final parentCountry;
   final imageURL;
-  final comments;
-  final commentsAuthor;
-  final commentsRating;
   final isFavorite;
 
-  const CardWidget(
-      {Key? key,
-      required this.title,
-      required this.descriprion,
-      required this.imageURL,
-      required this.parentCountry,
-      required this.isFavorite,
-      this.comments,
-      this.commentsAuthor,
-      this.commentsRating})
-      : super(key: key);
+  const CardWidget({
+    Key? key,
+    required this.title,
+    required this.description,
+    required this.imageURL,
+    required this.parentCountry,
+    required this.isFavorite,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => CityDescriprionWidget(
-                      cityName: title,
-                      descriprion: descriprion,
-                      imageURL: imageURL,
-                      parentCounry: parentCountry,
-                      isFavorite: isFavorite,
-                      comments: comments,
-                      commentsAuthor: commentsAuthor,
-                      commentsRating: commentsRating,
-                    )));
+        Navigator.pushNamed(context, '/CityDescription', arguments: {
+          'cityName': title,
+          'description': description,
+          'imageURL': imageURL,
+          'parentCounry': parentCountry,
+          'isFavorite': isFavorite,
+        });
       },
       child: Container(
           margin: const EdgeInsets.only(top: 12),
@@ -123,7 +118,7 @@ class CardWidget extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       fontSize: 24,
                     )),
-                Text(descriprion,
+                Text(description,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     style: const TextStyle(

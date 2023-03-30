@@ -1,32 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:data_bases_project/blocs/cityDesc/city_desc_bloc.dart';
 import 'package:data_bases_project/database/database.dart';
 import 'package:data_bases_project/login/services/authServ.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'descriptionWidget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:share_plus/share_plus.dart';
 
 class CityDescriprionWidget extends StatefulWidget {
-  const CityDescriprionWidget(
-      {super.key,
-      required this.cityName,
-      required this.descriprion,
-      required this.imageURL,
-      required this.parentCounry,
-      required this.isFavorite,
-      this.comments,
-      this.commentsAuthor,
-      this.commentsRating});
-  final cityName;
-  final descriprion;
-  final imageURL;
-  final parentCounry;
-  final isFavorite;
-  final comments;
-  final commentsAuthor;
-  final commentsRating;
-
   @override
   State<CityDescriprionWidget> createState() => _CityDescriprionWidgetState();
 }
@@ -35,16 +16,35 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
   List<double> item = [];
   final User? user = fAuth.currentUser;
   bool isFavorite = false;
+  var args;
+
+  _yourFunction(args) async {
+    args = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{
+          'cityName': '',
+          'description': '',
+          'imageURL': '',
+          'parentCounry': '',
+          'isFavorite': false,
+        }) as Map<String, dynamic>;
+  }
 
   @override
   void initState() {
-    isFavorite = widget.isFavorite;
     super.initState();
+    Future.delayed(Duration.zero, () {
+      setState(() {
+        args = ModalRoute.of(context)?.settings.arguments;
+      });
+      _yourFunction(args);
+      isFavorite = args['isFavorite'];
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        //listener
         body: SingleChildScrollView(
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 500),
@@ -67,7 +67,7 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       image: DecorationImage(
-                          image: NetworkImage(widget.imageURL),
+                          image: NetworkImage(args['imageURL']),
                           fit: BoxFit.cover)),
                   child: Container(
                     margin: const EdgeInsets.symmetric(
@@ -89,26 +89,36 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                               ),
                               color: Colors.white,
                             ),
-                            IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  if (isFavorite == true) {
-                                    final docTown = FirebaseFirestore.instance
-                                        .collection('Town')
-                                        .doc(widget.cityName);
-                                    docTown.update({'isFavorite': false});
-                                    isFavorite = false;
-                                  } else {
-                                    final docTown = FirebaseFirestore.instance
-                                        .collection('Town')
-                                        .doc(widget.cityName);
-                                    docTown.update({'isFavorite': true});
-                                    isFavorite = true;
-                                  }
-                                });
-                              },
-                              icon: const Icon(Icons.favorite),
-                              color: isFavorite ? Colors.red : Colors.white,
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    Share.share('someText');
+                                  },
+                                  icon: const Icon(Icons.share),
+                                  color: Colors.white,
+                                ),
+                                BlocBuilder<CityDescBloc, CityDescState>(
+                                  //equitable
+                                  builder: (context, state) {
+                                    return IconButton(
+                                      onPressed: () {
+                                        context.read<CityDescBloc>().add(
+                                              FavoriteEvent(
+                                                isFavorite,
+                                                args['cityName'],
+                                              ),
+                                            );
+                                      },
+                                      icon: const Icon(Icons.favorite),
+                                      color: isFavorite
+                                          ? Colors
+                                              .red // some problem with display correct state of favorite icon color
+                                          : Colors.white,
+                                    );
+                                  },
+                                ),
+                              ],
                             ),
                           ],
                         ),
@@ -116,7 +126,7 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.cityName,
+                              args['cityName'],
                               style: const TextStyle(
                                 fontSize: 30,
                                 color: Colors.white,
@@ -132,7 +142,7 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                                       Icons.location_on,
                                       color: Colors.white,
                                     ),
-                                    Text(widget.parentCounry,
+                                    Text(args['parentCounry'],
                                         overflow: TextOverflow.ellipsis,
                                         style: const TextStyle(
                                           fontSize: 20,
@@ -209,7 +219,7 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                       ),
                       width: double.infinity,
                       child: Text(
-                        widget.descriprion,
+                        args['description'],
                         style: const TextStyle(
                           fontSize: 17,
                           fontWeight: FontWeight.w600,
@@ -241,7 +251,7 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                       ],
                     ),
                     StreamBuilder<List<Comment>>(
-                        stream: readComment(widget.cityName),
+                        stream: readComment(args['cityName']),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return const Text('Something went wrong!');
@@ -292,7 +302,7 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                       ),
                     ),
                     StreamBuilder<List<Hotel>>(
-                        stream: readHotel(widget.cityName),
+                        stream: readHotel(args['cityName']),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return const Text('Something went wrong!');
@@ -322,7 +332,7 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                       ),
                     ),
                     StreamBuilder<List<Cafe>>(
-                        stream: readCafe(widget.cityName),
+                        stream: readCafe(args['cityName']),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return const Text('Something went wrong!');
@@ -353,7 +363,7 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                       ),
                     ),
                     StreamBuilder<List<Attraction>>(
-                        stream: readAttraction(widget.cityName),
+                        stream: readAttraction(args['cityName']),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return const Text('Something went wrong!');
@@ -395,8 +405,8 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
         name: cafe.name,
         picture: cafe.picture,
         rating: cafe.rating,
-        townName: widget.cityName,
-        picteures: cafe.pictures,
+        townName: args['cityName'],
+        pictures: cafe.pictures,
         latitude: cafe.latitude,
         longitude: cafe.longitude,
       );
@@ -406,7 +416,7 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
         name: hotel.name,
         picture: hotel.picture,
         rating: hotel.rating,
-        townName: widget.cityName,
+        townName: args['cityName'],
         pictures: hotel.pictures,
         latitude: hotel.latitude,
         longitude: hotel.longitude,
@@ -417,8 +427,8 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
         name: attraction.name,
         picture: attraction.picture,
         rating: attraction.rating,
-        townName: widget.cityName,
-        picteures: attraction.pictures,
+        townName: args['cityName'],
+        pictures: attraction.pictures,
         longitude: attraction.longitude,
         latitude: attraction.latitude,
       );
@@ -451,20 +461,17 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                       obscureText: false,
                       style: const TextStyle(
                         fontSize: 20,
-                        color: Colors.black54,
                       ),
                       decoration: const InputDecoration(
                           hintText: 'Enter a comment',
                           focusedBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 3)),
+                              borderSide: BorderSide(width: 2)),
                           enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 1)),
+                              borderSide: BorderSide(width: 1)),
                           hintStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.black)),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          )),
                     ),
                     const SizedBox(
                       height: 10,
@@ -473,7 +480,7 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                         items: _rating.map((String val) {
                           return DropdownMenuItem<String>(
                             value: val,
-                            child: new Text(val),
+                            child: Text(val),
                           );
                         }).toList(),
                         hint: Text(_selectedRating),
@@ -534,19 +541,20 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         }),
-                    TextButton(
-                        child: const Text('Approve'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          FirebaseFirestore.instance
-                              .collection('Note comment')
-                              .add({
-                            'Comment': _commentController.text,
-                            'Rating': _selectedRating,
-                            'Town': widget.cityName,
-                            'UserName': user!.displayName,
-                          });
-                        }),
+                    BlocBuilder<CityDescBloc, CityDescState>(
+                      builder: (context, state) {
+                        return TextButton(
+                            child: const Text('Approve'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              context.read<CityDescBloc>().add(AddCommentEvent(
+                                  _commentController.text,
+                                  _selectedRating,
+                                  args['cityName'],
+                                  user!.displayName));
+                            });
+                      },
+                    ),
                   ],
                 ),
               ],
@@ -680,19 +688,20 @@ class HotelCardWidget extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => HotelDescriprionWidget(
-                                  townName: townName,
-                                  imageURL: picture,
-                                  descriprion: description,
-                                  HotelName: name,
-                                  pictures: pictures,
-                                  rating: rating,
-                                  latitude: latitude,
-                                  longitude: longitude,
-                                )));
+                    Navigator.pushNamed(
+                      context,
+                      '/DescriptionWidget',
+                      arguments: {
+                        'townName': townName,
+                        'imageURL': picture,
+                        'description': description,
+                        'HotelName': name,
+                        'pictures': pictures,
+                        'rating': rating,
+                        'latitude': latitude,
+                        'longitude': longitude,
+                      },
+                    );
                   },
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -757,7 +766,7 @@ class RestaurantsWidget extends StatelessWidget {
   final picture;
   final rating;
   final townName;
-  final picteures;
+  final pictures;
   final latitude;
   final longitude;
   const RestaurantsWidget({
@@ -767,7 +776,7 @@ class RestaurantsWidget extends StatelessWidget {
     required this.picture,
     required this.rating,
     required this.townName,
-    required this.picteures,
+    required this.pictures,
     required this.latitude,
     required this.longitude,
   });
@@ -814,19 +823,20 @@ class RestaurantsWidget extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => HotelDescriprionWidget(
-                                  townName: townName,
-                                  imageURL: picture,
-                                  descriprion: description,
-                                  HotelName: name,
-                                  pictures: picteures,
-                                  rating: rating,
-                                  latitude: latitude,
-                                  longitude: longitude,
-                                )));
+                    Navigator.pushNamed(
+                      context,
+                      '/DescriptionWidget',
+                      arguments: {
+                        'townName': townName,
+                        'imageURL': picture,
+                        'description': description,
+                        'HotelName': name,
+                        'pictures': pictures,
+                        'rating': rating,
+                        'latitude': latitude,
+                        'longitude': longitude,
+                      },
+                    );
                   },
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -852,7 +862,7 @@ class AttractionWidget extends StatelessWidget {
   final picture;
   final rating;
   final townName;
-  final picteures;
+  final pictures;
   final latitude;
   final longitude;
   const AttractionWidget({
@@ -862,7 +872,7 @@ class AttractionWidget extends StatelessWidget {
     required this.picture,
     required this.rating,
     required this.townName,
-    required this.picteures,
+    required this.pictures,
     required this.latitude,
     required this.longitude,
   });
@@ -903,18 +913,20 @@ class AttractionWidget extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => HotelDescriprionWidget(
-                                  townName: townName,
-                                  imageURL: picture,
-                                  descriprion: description,
-                                  HotelName: name,
-                                  pictures: picteures,
-                                  longitude: longitude,
-                                  latitude: latitude,
-                                )));
+                    Navigator.pushNamed(
+                      context,
+                      '/DescriptionWidget',
+                      arguments: {
+                        'townName': townName,
+                        'imageURL': picture,
+                        'description': description,
+                        'HotelName': name,
+                        'pictures': pictures,
+                        'rating': rating,
+                        'latitude': latitude,
+                        'longitude': longitude,
+                      },
+                    );
                   },
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(

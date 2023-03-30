@@ -16,12 +16,11 @@ class Data with ChangeNotifier {
 }
 
 class MapWidget extends StatelessWidget {
-  final latitude;
-  final longitude;
-  const MapWidget([this.latitude, this.longitude]);
-
   @override
   Widget build(BuildContext context) {
+    final arguments = (ModalRoute.of(context)?.settings.arguments ??
+            <String, dynamic>{'latitude': 50.0, 'longitude': 50.0})
+        as Map<String, dynamic>;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Map'),
@@ -32,8 +31,10 @@ class MapWidget extends StatelessWidget {
             children: [
               Flexible(
                 child: FlutterMap(
-                  options:
-                      MapOptions(center: LatLng(latitude, longitude), zoom: 17),
+                  options: MapOptions(
+                      center:
+                          LatLng(arguments['latitude'], arguments['longitude']),
+                      zoom: 17),
                   children: [
                     TileLayer(
                       urlTemplate:
@@ -43,7 +44,8 @@ class MapWidget extends StatelessWidget {
                     MarkerLayer(
                       markers: [
                         Marker(
-                            point: LatLng(latitude, longitude),
+                            point: LatLng(
+                                arguments['latitude'], arguments['longitude']),
                             builder: (ctx) => const Icon(Icons.pin_drop))
                       ],
                     )

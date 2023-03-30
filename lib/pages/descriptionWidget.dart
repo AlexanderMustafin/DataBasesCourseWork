@@ -1,42 +1,36 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:data_bases_project/blocs/desc/desc_bloc_bloc.dart';
 import 'package:data_bases_project/database/database.dart';
 import 'package:data_bases_project/pages/mapWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../login/services/authServ.dart';
 
-class HotelDescriprionWidget extends StatefulWidget {
-  const HotelDescriprionWidget({
-    required this.HotelName,
-    required this.descriprion,
-    required this.imageURL,
-    required this.townName,
-    required this.pictures,
-    this.rating,
-    this.latitude,
-    this.longitude,
-  });
-  final HotelName;
-  final descriprion;
-  final imageURL;
-  final townName;
-  final pictures;
-  final rating;
-  final double? latitude;
-  final double? longitude;
-
+class DescriptionWidget extends StatefulWidget {
   @override
-  State<HotelDescriprionWidget> createState() => _HotelDescriprionWidgetState();
+  State<DescriptionWidget> createState() => _DescriptionWidgetState();
 }
 
-class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
+class _DescriptionWidgetState extends State<DescriptionWidget> {
   @override
   Widget build(BuildContext context) {
+    final arguments = (ModalRoute.of(context)?.settings.arguments ??
+        <String, dynamic>{
+          'HotelName': '',
+          'description': '',
+          'imageURL': '',
+          'townName': '',
+          'pictures': '',
+          'rating': '',
+          'latitude': 0.0,
+          'longitude': 0.0,
+        }) as Map<String, dynamic>;
     final _transformationController = TransformationController();
-    List<String> mylist = widget.pictures.split(' ');
+    List<String> mylist = arguments['pictures'].split(' ');
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 255, 255, 255),
         body: SingleChildScrollView(
@@ -60,7 +54,7 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
                         image: DecorationImage(
-                            image: NetworkImage(widget.imageURL),
+                            image: NetworkImage(arguments['imageURL']),
                             fit: BoxFit.cover)),
                     child: Container(
                       margin: const EdgeInsets.symmetric(
@@ -82,12 +76,12 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                                 ),
                                 color: Colors.white,
                               ),
-                              if (widget.rating != '' &&
-                                  widget.rating != null) ...[
+                              if (arguments['rating'] != '' &&
+                                  arguments['rating'] != null) ...[
                                 Row(
                                   children: [
                                     Text(
-                                      widget.rating,
+                                      arguments['rating'],
                                       style: const TextStyle(
                                         fontSize: 25,
                                         color: Color(0xffffb006),
@@ -108,7 +102,7 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                widget.HotelName,
+                                arguments['HotelName'],
                                 style: const TextStyle(
                                   fontSize: 30,
                                   color: Colors.white,
@@ -147,7 +141,7 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                                         size: 35,
                                         color: Colors.white,
                                       ),
-                                      Text(widget.townName,
+                                      Text(arguments['townName'],
                                           style: const TextStyle(
                                             fontSize: 20,
                                             color: Colors.white,
@@ -158,13 +152,11 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                                     color: Colors.white,
                                     icon: const Icon(Icons.map_rounded),
                                     onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        CupertinoPageRoute(
-                                            builder: (context) => MapWidget(
-                                                widget.latitude,
-                                                widget.longitude)),
-                                      );
+                                      Navigator.pushNamed(context, '/MapWidget',
+                                          arguments: {
+                                            'latitude': arguments['latitude'],
+                                            'longitude': arguments['longitude'],
+                                          });
                                     },
                                   ),
                                 ],
@@ -197,7 +189,7 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                         ),
                         width: double.infinity,
                         child: Text(
-                          widget.descriprion,
+                          arguments['description'],
                           style: const TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
@@ -293,14 +285,14 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                           ),
                           IconButton(
                             onPressed: () {
-                              addComment();
+                              addComment(hotelName: arguments['HotelName']);
                             },
                             icon: const Icon(Icons.add_comment),
                           )
                         ],
                       ),
                       StreamBuilder<List<Comment>>(
-                          stream: readHotelComment(widget.HotelName),
+                          stream: readHotelComment(arguments['HotelName']),
                           builder: (context, snapshot) {
                             if (snapshot.hasError) {
                               return const Text('Something went wrong!');
@@ -413,7 +405,8 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
         ));
   }
 
-  Future<void> addComment() async {
+  Future<void> addComment({required hotelName}) async {
+    final String comment;
     List<String> _rating = ['1', '2', '3', '4', '5'];
     dynamic _selectedRating = 'Choos the rating';
     final User? user = fAuth.currentUser;
@@ -523,19 +516,20 @@ class _HotelDescriprionWidgetState extends State<HotelDescriprionWidget> {
                         onPressed: () {
                           Navigator.of(context).pop();
                         }),
-                    TextButton(
-                        child: const Text('Approve'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          FirebaseFirestore.instance
-                              .collection('Hotel comment')
-                              .add({
-                            'Comment': _commentController.text,
-                            'Rating': _selectedRating,
-                            'Hotel': widget.HotelName,
-                            'UserName': user!.displayName,
-                          });
-                        }),
+                    BlocBuilder<DescBlocBloc, DescBlocState>(
+                      builder: (context, state) {
+                        return TextButton(
+                            child: const Text('Approve'),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              context.read<DescBlocBloc>().add(AddCommentEvent(
+                                  _commentController.text,
+                                  _selectedRating,
+                                  hotelName,
+                                  user!.displayName));
+                            });
+                      },
+                    ),
                   ],
                 ),
               ],

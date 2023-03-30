@@ -1,7 +1,7 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_bases_project/blocs/auth/bloc/auth_bloc.dart';
 import 'package:data_bases_project/login/services/authServ.dart';
-import 'package:data_bases_project/pages/signIn.dart';
 import 'package:data_bases_project/pages/infoPage.dart';
 import 'package:data_bases_project/pages/mapWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
+import '../blocs/appBar/abb_bar_bloc.dart';
 import '../theme.dart';
 import 'favoriteCities.dart';
 
@@ -24,7 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool enteredParameters = false;
   late final List<Widget> _widgetOptions = <Widget>[
     const FirstScreenWidget(),
-    const MapWidget(20.0, 20.0),
+    MapWidget(),
     const FavoriteCitiesWidget(),
   ];
 
@@ -116,24 +117,20 @@ class CustomBarWidget extends StatelessWidget {
                                 )),
                             Consumer<ThemeProvider>(
                               builder: (context, provider, child) {
-                                return IconButton(
-                                  onPressed: () {
-                                    if (provider.currentTheme == "light") {
-                                      provider.currentTheme = "dark";
-                                    } else if (provider.currentTheme ==
-                                        "dark") {
-                                      provider.currentTheme = "light";
-                                    } else {
-                                      provider.currentTheme = "system";
-                                    }
-                                    Provider.of<ThemeProvider>(context,
-                                            listen: false)
-                                        .changeTheme(provider.currentTheme);
+                                return BlocBuilder<AbbBarBloc, AbbBarState>(
+                                  builder: (context, state) {
+                                    return IconButton(
+                                      onPressed: () {
+                                        context.read<AbbBarBloc>().add(
+                                            ChangeThemeEvent(
+                                                context, provider));
+                                      },
+                                      icon: const Icon(
+                                        Icons.brightness_6,
+                                        color: Colors.white,
+                                      ),
+                                    );
                                   },
-                                  icon: const Icon(
-                                    Icons.brightness_6,
-                                    color: Colors.white,
-                                  ),
                                 );
                               },
                             ),
@@ -194,58 +191,69 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
                 DocumentSnapshot snap = snapshot.data!.docs[i];
                 currencyItems.add(
                   DropdownMenuItem(
+                    value: snap.id,
                     child: Text(
-                      '${snap.id}',
+                      snap.id,
                       //style:
                     ),
-                    value: snap.id,
                   ),
                 );
               }
-              return DropdownButton(
-                hint: const Text(
-                  'Select Destination',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                ),
-                value: selectedCurrency,
-                isExpanded: true,
-                icon: const Icon(
-                  Icons.arrow_downward,
-                  color: Colors.white,
-                ),
-                elevation: 16,
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).brightness == Brightness.light
-                      ? Colors.black
-                      : Colors.white,
-                ),
-                underline: Container(
-                  height: 0,
-                ),
-                onChanged: (currencyValue) {
-                  context.read<Data>().changeData(currencyValue);
-                  final snackBar = SnackBar(
-                    content: Text(
-                      'You choosen country $currencyValue',
+              return BlocBuilder<AbbBarBloc, AbbBarState>(
+                builder: (context, state) {
+                  return DropdownButton(
+                    hint: const Text(
+                      'Select Destination',
                       style: TextStyle(
-                        color: Color(0xff11b719),
+                        fontSize: 18,
+                        color: Colors.white,
                       ),
                     ),
+                    value: selectedCurrency,
+                    isExpanded: true,
+                    icon: const Icon(
+                      Icons.arrow_downward,
+                      color: Colors.white,
+                    ),
+                    elevation: 16,
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.black
+                          : Colors.white,
+                    ),
+                    underline: Container(
+                      height: 0,
+                    ),
+                    onChanged: (currencyValue) {
+                      context.read<Data>().changeData(currencyValue);
+                      showSuccessFlushBar(context, currencyValue);
+                      setState(() {
+                        selectedCurrency = currencyValue;
+                      });
+                    },
+                    items: currencyItems,
                   );
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  setState(() {
-                    selectedCurrency = currencyValue;
-                  });
                 },
-                items: currencyItems,
               );
             }
           }),
         ));
   }
+}
+
+void showSuccessFlushBar(BuildContext context, String title) {
+  Flushbar(
+    duration: Duration(seconds: 3),
+    icon: const Icon(
+      Icons.check,
+      color: Colors.white,
+    ),
+    backgroundColor: Colors.greenAccent,
+    message: title,
+    flushbarStyle: FlushbarStyle.FLOATING,
+    margin: EdgeInsets.all(5),
+    borderRadius: BorderRadius.circular(8),
+  ).show(context);
 }

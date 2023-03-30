@@ -1,5 +1,5 @@
 import 'package:data_bases_project/pages/signIn.dart';
-import 'package:data_bases_project/pages/startPage.dart';
+import 'package:data_bases_project/pages/myHomePage.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,7 +65,7 @@ class _SignInState extends State<SignUp> {
                         height: 100,
                       ),
                       const Text(
-                        'Traveler', 
+                        'Traveler',
                         style: TextStyle(
                             fontSize: 45,
                             fontWeight: FontWeight.bold,

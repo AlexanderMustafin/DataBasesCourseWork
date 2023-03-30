@@ -35,7 +35,7 @@ class FavoriteCitiesWidgetState extends State<FavoriteCitiesWidget> {
 
 Widget builtCardWidget(Town town) => CardWidget(
       title: town.name,
-      descriprion: town.description,
+      description: town.description,
       parentCountry: town.idCountry,
       imageURL: town.pucture,
       isFavorite: town.isFavorite,
@@ -43,43 +43,31 @@ Widget builtCardWidget(Town town) => CardWidget(
 
 class CardWidget extends StatelessWidget {
   final title;
-  final descriprion;
+  final description;
   final parentCountry;
   final imageURL;
-  final comments;
-  final commentsAuthor;
-  final commentsRating;
   final isFavorite;
 
-  const CardWidget(
-      {Key? key,
-      required this.title,
-      required this.descriprion,
-      required this.imageURL,
-      required this.parentCountry,
-      required this.isFavorite,
-      this.comments,
-      this.commentsAuthor,
-      this.commentsRating})
-      : super(key: key);
+  const CardWidget({
+    Key? key,
+    required this.title,
+    required this.description,
+    required this.imageURL,
+    required this.parentCountry,
+    required this.isFavorite,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            CupertinoPageRoute(
-                builder: (context) => CityDescriprionWidget(
-                      cityName: title,
-                      descriprion: descriprion,
-                      imageURL: imageURL,
-                      parentCounry: parentCountry,
-                      isFavorite: isFavorite,
-                      comments: comments,
-                      commentsAuthor: commentsAuthor,
-                      commentsRating: commentsRating,
-                    )));
+        Navigator.pushNamed(context, '/CityDescription', arguments: {
+          'cityName': title,
+          'description': description,
+          'imageURL': imageURL,
+          'parentCounry': parentCountry,
+          'isFavorite': isFavorite,
+        });
       },
       child: Container(
           margin: const EdgeInsets.only(top: 12),
@@ -105,7 +93,7 @@ class CardWidget extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       fontSize: 24,
                     )),
-                Text(descriprion,
+                Text(description,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     style: const TextStyle(
