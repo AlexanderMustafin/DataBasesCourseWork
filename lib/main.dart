@@ -61,7 +61,8 @@ class MyApp extends StatelessWidget {
                 create: (BuildContext context) => AbbBarBloc(),
               ),
               BlocProvider(
-                create: (BuildContext context) => CitiesSelectionsBloc(),
+                create: (BuildContext context) => CitiesSelectionsBloc()
+                  ..add(InitStateCitiesEvent(context.read<Data>().getData)),
               )
             ],
             child: Consumer<ThemeProvider>(

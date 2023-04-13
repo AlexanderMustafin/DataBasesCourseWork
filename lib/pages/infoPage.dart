@@ -22,37 +22,29 @@ class _FirstScreenWidgetState extends State<FirstScreenWidget> {
     return BlocBuilder<CitiesSelectionsBloc, CitiesSelectionsState>(
       //initial readTown
       builder: (context, state) {
-        create:
-        (_) => CitiesSelectionsBloc()..add(InitStateCitiesEvent());
-        return StreamBuilder<List<Town>>(
-          stream: readTown(context.watch<Data>().getData),
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return const Text('Something went wrong!');
-            } else if (context.watch<Data>().getData == '') {
-              return AwaitWidget();
-            } else if (snapshot.hasData) {
-              final towns = snapshot.data!;
-              return Container(
-                key: Key(Theme.of(context).brightness.toString()),
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                  image: AssetImage(
-                    Theme.of(context).brightness == Brightness.light
-                        ? 'images/bgOff20.jpg'
-                        : 'images/bgOff20Dark.jpg',
-                  ),
-                  repeat: ImageRepeat.repeatY,
-                )),
-                child: ListView(
-                  children: towns.map(builtCardWidget).toList(),
-                ),
-              );
-            } else {
-              return const Center(child: CircularProgressIndicator());
-            }
-          },
-        );
+        (_) => CitiesSelectionsBloc();
+        if (state is AwaitState) {
+          const Text('Await Widget');
+        } else if (state is CityChangeState) {
+          return Container(
+            key: Key(Theme.of(context).brightness.toString()),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              image: AssetImage(
+                Theme.of(context).brightness == Brightness.light
+                    ? 'images/bgOff20.jpg'
+                    : 'images/bgOff20Dark.jpg',
+              ),
+              repeat: ImageRepeat.repeatY,
+            )),
+            child: ListView(
+              children: state.list.map(builtCardWidget).toList(),
+            ),
+          );
+        } else if (state is ErrorState) {
+          return const Text('Error');
+        }
+        return const Text('error');
       },
     );
   }

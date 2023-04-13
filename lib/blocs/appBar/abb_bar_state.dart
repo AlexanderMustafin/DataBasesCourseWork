@@ -13,6 +13,8 @@ class ChangeThemeState extends AbbBarState {}
 
 class ChangeValueState extends AbbBarState {
   final String value;
+  @override
+  List<Object> get props => [value];
 
   ChangeValueState(this.value);
 }

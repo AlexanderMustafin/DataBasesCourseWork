@@ -8,15 +8,14 @@ part 'cities_selections_state.dart';
 
 class CitiesSelectionsBloc
     extends Bloc<CitiesSelectionsEvent, CitiesSelectionsState> {
-  CitiesSelectionsBloc() : super(const CityChangeState(null)) {
-    on<CityChangeEvent>((event, emit) {
-      if (state.data == null) {
-        emit(AwaitState(null));
-      } else if (state.data != null) {
-        emit(InitStateCitiesState(state.data, readTown(state.data!)));
-      } else {
-        emit(ErrorState('Error'));
-      }
+  CitiesSelectionsBloc() : super(InitStateCitiesState({})) {
+    on<InitStateCitiesEvent>((event, emit) async {
+      await emit.forEach(readTown(event.city),
+          onData: (List<Town> coming_data) {
+        return CityChangeState(coming_data);
+      }).catchError((error) {
+        return ErrorState();
+      });
     });
   }
 }

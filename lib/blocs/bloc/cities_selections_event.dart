@@ -13,4 +13,8 @@ class CityChangeEvent extends CitiesSelectionsEvent {
   CityChangeEvent(this.value);
 }
 
-class InitStateCitiesEvent extends CitiesSelectionsEvent {}
+class InitStateCitiesEvent extends CitiesSelectionsEvent {
+  final city;
+
+  InitStateCitiesEvent(this.city);
+}

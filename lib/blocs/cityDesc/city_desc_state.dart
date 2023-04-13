@@ -15,4 +15,6 @@ class FavoriteState extends CityDescState {
   final bool isFavorite;
 
   FavoriteState(this.isFavorite);
+  @override
+  List<Object> get props => [isFavorite];
 }
