@@ -1,12 +1,10 @@
 import 'package:data_bases_project/blocs/appBar/abb_bar_bloc.dart';
-import 'package:data_bases_project/blocs/bloc/cities_selections_bloc.dart';
 import 'package:data_bases_project/blocs/cityDesc/city_desc_bloc.dart';
 import 'package:data_bases_project/blocs/desc/desc_bloc_bloc.dart';
 import 'package:data_bases_project/login/userWidget.dart';
 import 'package:data_bases_project/login/services/authServ.dart';
 import 'package:data_bases_project/pages/cityDescriprion.dart';
 import 'package:data_bases_project/pages/descriptionWidget.dart';
-import 'package:data_bases_project/pages/favoriteCities.dart';
 import 'package:data_bases_project/pages/signIn.dart';
 import 'package:data_bases_project/pages/myHomePage.dart';
 import 'package:data_bases_project/pages/mapWidget.dart';
@@ -19,6 +17,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'blocs/auth/bloc/auth_bloc.dart';
+import 'blocs/myHomePageBloc/cities_selections_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

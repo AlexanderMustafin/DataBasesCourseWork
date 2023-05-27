@@ -1,11 +1,9 @@
-import 'package:data_bases_project/blocs/bloc/cities_selections_bloc.dart';
+import 'package:data_bases_project/blocs/myHomePageBloc/cities_selections_bloc.dart';
 import 'package:data_bases_project/database/database.dart';
 import 'package:data_bases_project/login/services/authServ.dart';
-import 'package:data_bases_project/pages/mapWidget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 class FirstScreenWidget extends StatefulWidget {
   const FirstScreenWidget({
@@ -23,7 +21,7 @@ class _FirstScreenWidgetState extends State<FirstScreenWidget> {
       //initial readTown
       builder: (context, state) {
         (_) => CitiesSelectionsBloc();
-        if (state is AwaitState) {
+        if (state is CityWaitState) {
           const Text('Await Widget');
         } else if (state is CityChangeState) {
           return Container(
@@ -41,7 +39,7 @@ class _FirstScreenWidgetState extends State<FirstScreenWidget> {
               children: state.list.map(builtCardWidget).toList(),
             ),
           );
-        } else if (state is ErrorState) {
+        } else if (state is CityErrorState) {
           return const Text('Error');
         }
         return const Text('error');

@@ -1,7 +1,6 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:data_bases_project/blocs/auth/bloc/auth_bloc.dart';
-import 'package:data_bases_project/blocs/bloc/cities_selections_bloc.dart';
 import 'package:data_bases_project/login/services/authServ.dart';
 import 'package:data_bases_project/pages/infoPage.dart';
 import 'package:data_bases_project/pages/mapWidget.dart';
@@ -11,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import '../blocs/appBar/abb_bar_bloc.dart';
+import '../blocs/myHomePageBloc/cities_selections_bloc.dart';
 import '../theme.dart';
 import 'favoriteCities.dart';
 
@@ -90,7 +90,7 @@ class CustomBarWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 15),
+                    margin: const EdgeInsets.only(top: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -109,8 +109,7 @@ class CustomBarWidget extends StatelessWidget {
                             IconButton(
                                 onPressed: () {
                                   _logOut(context);
-                                  Navigator.pushReplacementNamed(
-                                      context, 'SignIn');
+                                  Navigator.of(context).pushNamed('/SignIn');
                                 },
                                 icon: const Icon(
                                   Icons.logout,
@@ -230,7 +229,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
                     onChanged: (currencyValue) {
                       context.read<Data>().changeData(currencyValue);
                       BlocProvider.of<CitiesSelectionsBloc>(context).add(
-                        InitStateCitiesEvent(currencyValue),
+                        CitiesSelectionsEvent.init(currencyValue),
                       );
                       showSuccessFlushBar(context, currencyValue);
                       setState(() {

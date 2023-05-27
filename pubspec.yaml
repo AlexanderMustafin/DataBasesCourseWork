@@ -53,10 +53,13 @@ dependencies:
   shared_preferences: ^2.0.17
   share_plus: ^6.3.0
   another_flushbar: ^1.12.29
+  freezed: ^2.3.2
+  freezed_annotation: ^2.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  build_runner: ^2.3.3
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

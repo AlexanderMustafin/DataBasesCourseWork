@@ -13,7 +13,6 @@ class CityDescriprionWidget extends StatefulWidget {
 }
 
 class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
-  List<double> item = [];
   final User? user = fAuth.currentUser;
   bool isFavorite = false;
   var args;
@@ -38,6 +37,9 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
       });
       _yourFunction(args);
       isFavorite = args['isFavorite'];
+      context.read<CityDescBloc>().add(InitialEventHotel(args["cityName"]));
+      context.read<CityDescBloc>().add(InitialEventCafe(args["cityName"]));
+      context.read<CityDescBloc>().add(InitialEventAtraction(args["cityName"]));
     });
   }
 
@@ -103,17 +105,25 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                                   builder: (context, state) {
                                     return IconButton(
                                       onPressed: () {
-                                        context.read<CityDescBloc>().add(
-                                              FavoriteEvent(
-                                                isFavorite,
-                                                args['cityName'],
-                                              ),
-                                            );
+                                        if (isFavorite == false) {
+                                          context.read<CityDescBloc>().add(
+                                                AddFavoriteEvent(
+                                                  isFavorite,
+                                                  args['cityName'],
+                                                ),
+                                              );
+                                        } else {
+                                          context.read<CityDescBloc>().add(
+                                                RemoveFavoriteEvent(
+                                                  isFavorite,
+                                                  args['cityName'],
+                                                ),
+                                              );
+                                        }
                                       },
                                       icon: const Icon(Icons.favorite),
                                       color: isFavorite
-                                          ? Colors
-                                              .red // some problem with display correct state of favorite icon color
+                                          ? Colors.red
                                           : Colors.white,
                                     );
                                   },
@@ -301,26 +311,23 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                         fontWeight: FontWeight.w800,
                       ),
                     ),
-                    StreamBuilder<List<Hotel>>(
-                        stream: readHotel(args['cityName']),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return const Text('Something went wrong!');
-                          } else if (snapshot.hasData) {
-                            final hotels = snapshot.data!;
-                            return SizedBox(
-                              height: 140,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children:
-                                    hotels.map(builtHotleCardWidget).toList(),
-                              ),
-                            );
-                          } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
-                        }),
+                    BlocBuilder<CityDescBloc, CityDescState>(
+                      builder: (context, state) {
+                        if (state is HotelChangeState) {
+                          return SizedBox(
+                            height: 140,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: state.listHotels
+                                  .map(builtHotleCardWidget)
+                                  .toList(),
+                            ),
+                          );
+                        } else {
+                          return const Text('Something went wrong');
+                        }
+                      },
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -331,26 +338,23 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                         fontWeight: FontWeight.w800,
                       ),
                     ),
-                    StreamBuilder<List<Cafe>>(
-                        stream: readCafe(args['cityName']),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return const Text('Something went wrong!');
-                          } else if (snapshot.hasData) {
-                            final cafes = snapshot.data!;
-                            return SizedBox(
-                              height: 140,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children:
-                                    cafes.map(builtCafeCardWidget).toList(),
-                              ),
-                            );
-                          } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
-                        }),
+                    BlocBuilder<CityDescBloc, CityDescState>(
+                      builder: (context, state) {
+                        if (state is HotelChangeState) {
+                          return SizedBox(
+                            height: 140,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: state.listCafe
+                                  .map(builtCafeCardWidget)
+                                  .toList(),
+                            ),
+                          );
+                        } else {
+                          return const Text('Something went wrong');
+                        }
+                      },
+                    ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -362,27 +366,23 @@ class _CityDescriprionWidgetState extends State<CityDescriprionWidget> {
                         color: Color(0xff151a22),
                       ),
                     ),
-                    StreamBuilder<List<Attraction>>(
-                        stream: readAttraction(args['cityName']),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return const Text('Something went wrong!');
-                          } else if (snapshot.hasData) {
-                            final attraction = snapshot.data!;
-                            return SizedBox(
-                              height: 140,
-                              child: ListView(
-                                scrollDirection: Axis.horizontal,
-                                children: attraction
-                                    .map(builtAttractionCardWidget)
-                                    .toList(),
-                              ),
-                            );
-                          } else {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
-                        }),
+                    BlocBuilder<CityDescBloc, CityDescState>(
+                      builder: (context, state) {
+                        if (state is HotelChangeState) {
+                          return SizedBox(
+                            height: 140,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: state.listAttraction
+                                  .map(builtAttractionCardWidget)
+                                  .toList(),
+                            ),
+                          );
+                        } else {
+                          return const Text('Something went wrong');
+                        }
+                      },
+                    ),
                   ],
                 ),
               ),

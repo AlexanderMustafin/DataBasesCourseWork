@@ -7,6 +7,33 @@ abstract class CityDescEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class InitialEventHotel extends CityDescEvent {
+  final townName;
+
+  InitialEventHotel(this.townName);
+
+  @override
+  List<Object> get props => [townName];
+}
+
+class InitialEventCafe extends CityDescEvent {
+  final townName;
+
+  InitialEventCafe(this.townName);
+
+  @override
+  List<Object> get props => [townName];
+}
+
+class InitialEventAtraction extends CityDescEvent {
+  final townName;
+
+  InitialEventAtraction(this.townName);
+
+  @override
+  List<Object> get props => [townName];
+}
+
 class AddCommentEvent extends CityDescEvent {
   final String commentText;
   final String rating;
@@ -21,11 +48,21 @@ class AddCommentEvent extends CityDescEvent {
   );
 }
 
-class FavoriteEvent extends CityDescEvent {
+class AddFavoriteEvent extends CityDescEvent {
   bool isFavorite;
   final String cityName;
 
-  FavoriteEvent(
+  AddFavoriteEvent(
+    this.isFavorite,
+    this.cityName,
+  );
+}
+
+class RemoveFavoriteEvent extends CityDescEvent {
+  bool isFavorite;
+  final String cityName;
+
+  RemoveFavoriteEvent(
     this.isFavorite,
     this.cityName,
   );
