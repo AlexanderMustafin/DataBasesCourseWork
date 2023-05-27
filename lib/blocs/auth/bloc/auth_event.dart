@@ -1,29 +1,43 @@
 part of 'auth_bloc.dart';
 
-abstract class AuthEvent extends Equatable {
-  @override
-  List<Object> get props => [];
+@freezed
+class AuthEvent with _$AuthEvent {
+  const factory AuthEvent.signIn(final String email, final String password) =
+      AuthSignInEvent;
+
+  const factory AuthEvent.signUp(
+          final String email, final String password, final String name) =
+      AuthSignUpEvent;
+
+  const factory AuthEvent.googleSignIn() = AuthGoogleSignInEvent;
+
+  const factory AuthEvent.signOut() = AuthSignOutEvent;
 }
 
-// When the user signing in with email and password this event is called and the [AuthRepository] is called to sign in the user
-class SignInRequested extends AuthEvent {
-  final String email;
-  final String password;
+// abstract class AuthEvent extends Equatable {
+//   @override
+//   List<Object> get props => [];
+// }
 
-  SignInRequested(this.email, this.password);
-}
+// // When the user signing in with email and password this event is called and the [AuthRepository] is called to sign in the user
+// class SignInRequested extends AuthEvent {
+  // final String email;
+  // final String password;
 
-// When the user signing up with email and password this event is called and the [AuthRepository] is called to sign up the user
-class SignUpRequested extends AuthEvent {
-  final String email;
-  final String password;
-  final String name;
+//   SignInRequested(this.email, this.password);
+// }
 
-  SignUpRequested(this.email, this.password, this.name);
-}
+// // When the user signing up with email and password this event is called and the [AuthRepository] is called to sign up the user
+// class SignUpRequested extends AuthEvent {
+//   final String email;
+//   final String password;
+//   final String name;
 
-// When the user signing in with google this event is called and the [AuthRepository] is called to sign in the user
-class GoogleSignInRequested extends AuthEvent {}
+//   SignUpRequested(this.email, this.password, this.name);
+// }
 
-// When the user signing out this event is called and the [AuthRepository] is called to sign out the user
-class SignOutRequested extends AuthEvent {}
+// // When the user signing in with google this event is called and the [AuthRepository] is called to sign in the user
+// class GoogleSignInRequested extends AuthEvent {}
+
+// // When the user signing out this event is called and the [AuthRepository] is called to sign out the user
+// class SignOutRequested extends AuthEvent {}

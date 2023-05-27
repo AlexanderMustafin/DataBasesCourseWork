@@ -522,11 +522,12 @@ class _DescriptionWidgetState extends State<DescriptionWidget> {
                             child: const Text('Approve'),
                             onPressed: () {
                               Navigator.of(context).pop();
-                              context.read<DescBlocBloc>().add(AddCommentEvent(
-                                  _commentController.text,
-                                  _selectedRating,
-                                  hotelName,
-                                  user!.displayName));
+                              context.read<DescBlocBloc>().add(
+                                  DescBlocEvent.addComment(
+                                      _commentController.text,
+                                      _selectedRating,
+                                      hotelName,
+                                      user!.displayName));
                             });
                       },
                     ),

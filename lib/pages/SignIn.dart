@@ -31,23 +31,23 @@ class _SignInState extends State<SignIn> {
       backgroundColor: const Color(0xff3A4A66),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is Authenticated) {
+          if (state is AuthAuthenticatedState) {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const MyHomePage()));
           }
-          if (state is AuthError) {
+          if (state is AuthErrorState) {
             ScaffoldMessenger.of(context)
                 .showSnackBar(SnackBar(content: Text(state.error)));
           }
         },
         child: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            if (state is Loading) {
+            if (state is AuthLoadingState) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
-            if (state is UnAuthenticated) {
+            if (state is AuthUnAuthenticatedState) {
               return Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: SingleChildScrollView(
@@ -231,14 +231,14 @@ class _SignInState extends State<SignIn> {
   void _authenticateWithEmailAndPassword(context) {
     if (_formKey.currentState!.validate()) {
       BlocProvider.of<AuthBloc>(context).add(
-        SignInRequested(_emailController.text, _passwordController.text),
+        AuthSignInEvent(_emailController.text, _passwordController.text),
       );
     }
   }
 
   void _authenticateWithGoogle(context) {
     BlocProvider.of<AuthBloc>(context).add(
-      GoogleSignInRequested(),
+      const AuthGoogleSignInEvent(),
     );
   }
 }

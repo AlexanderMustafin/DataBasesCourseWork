@@ -117,12 +117,12 @@ class CustomBarWidget extends StatelessWidget {
                                 )),
                             Consumer<ThemeProvider>(
                               builder: (context, provider, child) {
-                                return BlocBuilder<AbbBarBloc, AbbBarState>(
+                                return BlocBuilder<AppBarBloc, AppBarState>(
                                   builder: (context, state) {
                                     return IconButton(
                                       onPressed: () {
-                                        context.read<AbbBarBloc>().add(
-                                            ChangeThemeEvent(
+                                        context.read<AppBarBloc>().add(
+                                            AppBarChangeThemeEvent(
                                                 context, provider));
                                       },
                                       icon: const Icon(
@@ -157,7 +157,7 @@ class CustomBarWidget extends StatelessWidget {
 
 void _logOut(context) {
   BlocProvider.of<AuthBloc>(context).add(
-    SignOutRequested(),
+    const AuthSignOutEvent(),
   );
 }
 
@@ -199,7 +199,7 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
                   ),
                 );
               }
-              return BlocBuilder<AbbBarBloc, AbbBarState>(
+              return BlocBuilder<AppBarBloc, AppBarState>(
                 builder: (context, state) {
                   return DropdownButton(
                     hint: const Text(

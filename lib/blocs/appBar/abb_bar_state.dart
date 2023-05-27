@@ -1,20 +1,27 @@
 part of 'abb_bar_bloc.dart';
 
-abstract class AbbBarState extends Equatable {
-  const AbbBarState();
-
-  @override
-  List<Object> get props => [];
+@freezed
+class AppBarState with _$AppBarState {
+  const factory AppBarState.initial() = AppBarInitialState;
+  const factory AppBarState.changeTheme() = AppBarChangeThemeState;
+  const factory AppBarState.changeValue(String value) = AppBarChangeValueState;
 }
 
-class AbbBarInitial extends AbbBarState {}
+// abstract class AbbBarState extends Equatable {
+//   const AbbBarState();
 
-class ChangeThemeState extends AbbBarState {}
+//   @override
+//   List<Object> get props => [];
+// }
 
-class ChangeValueState extends AbbBarState {
-  final String value;
-  @override
-  List<Object> get props => [value];
+// class AbbBarInitial extends AbbBarState {}
 
-  ChangeValueState(this.value);
-}
+// class ChangeThemeState extends AbbBarState {}
+
+// class ChangeValueState extends AbbBarState {
+//   final String value;
+//   @override
+//   List<Object> get props => [value];
+
+//   ChangeValueState(this.value);
+// }

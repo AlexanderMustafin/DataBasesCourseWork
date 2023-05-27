@@ -18,10 +18,10 @@ class Dashboard extends StatelessWidget {
       ),
       body: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
-          if (state is UnAuthenticated) {
+          if (state is AuthUnAuthenticatedState) {
             // Navigate to the sign in screen when the user Signs Out
             Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(builder: (context) => SignIn()),
+              MaterialPageRoute(builder: (context) => const SignIn()),
               (route) => false,
             );
           }
@@ -46,7 +46,7 @@ class Dashboard extends StatelessWidget {
                 child: const Text('Sign Out'),
                 onPressed: () {
                   // Signing out the user
-                  context.read<AuthBloc>().add(SignOutRequested());
+                  context.read<AuthBloc>().add(const AuthSignOutEvent());
                 },
               ),
             ],

@@ -1,15 +1,18 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:provider/provider.dart';
 
 import '../../theme.dart';
 
+part 'abb_bar_bloc.freezed.dart';
+
 part 'abb_bar_event.dart';
 part 'abb_bar_state.dart';
 
-class AbbBarBloc extends Bloc<AbbBarEvent, AbbBarState> {
-  AbbBarBloc() : super(AbbBarInitial()) {
-    on<ChangeThemeEvent>(
+class AppBarBloc extends Bloc<AppBarEvent, AppBarState> {
+  AppBarBloc() : super(const AppBarState.initial()) {
+    on<AppBarChangeThemeEvent>(
       (event, emit) {
         if (event.provider.currentTheme == "light") {
           event.provider.currentTheme = "dark";
@@ -22,9 +25,5 @@ class AbbBarBloc extends Bloc<AbbBarEvent, AbbBarState> {
             .changeTheme(event.provider.currentTheme);
       },
     );
-
-    on<ChangeValueEvent>((event, emit) {
-      if (state is ChangeValueState) {}
-    });
   }
 }

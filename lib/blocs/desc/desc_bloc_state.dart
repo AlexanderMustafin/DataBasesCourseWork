@@ -1,12 +1,18 @@
 part of 'desc_bloc_bloc.dart';
 
-abstract class DescBlocState extends Equatable {
-  const DescBlocState();
-
-  @override
-  List<Object> get props => [];
+@freezed
+class DescBlocState with _$DescBlocState {
+  const factory DescBlocState.initial() = DescInitialState;
+  const factory DescBlocState.comment() = DescCommentState;
 }
 
-class DescBlocInitial extends DescBlocState {}
+// abstract class DescBlocState extends Equatable {
+//   const DescBlocState();
 
-class CommentState extends DescBlocState {}
+//   @override
+//   List<Object> get props => [];
+// }
+
+// class DescBlocInitial extends DescBlocState {}
+
+// class CommentState extends DescBlocState {}

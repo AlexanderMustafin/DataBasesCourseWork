@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
                 create: (BuildContext context) => CityDescBloc(),
               ),
               BlocProvider(
-                create: (BuildContext context) => AbbBarBloc(),
+                create: (BuildContext context) => AppBarBloc(),
               ),
               BlocProvider(
                 create: (BuildContext context) => CitiesSelectionsBloc()

@@ -1,5 +1,28 @@
 part of 'city_desc_bloc.dart';
 
+// @freezed
+// class CityDescEvent with _$CityDescEvent {
+//   const factory CityDescEvent.initHotel(final townName) =
+//       CityDescInitHotelEvent;
+
+//   const factory CityDescEvent.initCafe(final townName) = CityDescInitCafeEvent;
+
+//   const factory CityDescEvent.initAtraction(final townName) =
+//       CityDescInitAtractionEvent;
+
+//   const factory CityDescEvent.addComment(
+//       final String commentText,
+//       final String rating,
+//       final String townName,
+//       final String? userName) = CityDescAddCommentEvent;
+
+//   const factory CityDescEvent.addFavorite(
+//       bool isFavorite, final String cityName) = CityDescAddFavoriteEvent;
+
+//   const factory CityDescEvent.removeFavorite(
+//       bool isFavorite, final String cityName) = CityDescRemoveFavoriteEvent;
+// }
+
 abstract class CityDescEvent extends Equatable {
   const CityDescEvent();
 
